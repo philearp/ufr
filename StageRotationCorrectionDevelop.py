@@ -9,15 +9,11 @@ from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import matplotlib.pyplot as plt
 
-#def rotation_array(theta, axis):
-#    l = axis[0]
-#    m = axis[1]
-#    n = axis[2]
-#
-#    R = np.array([[l*l*(1-np.cos(theta)) + np.cos(theta),    m*l*(1-np.cos(theta)) - n*np.sin(theta), n*l*(1-np.cos(theta)) + m*np.sin(theta)],
-#                  [l*m*(1-np.cos(theta)) + n*np.cos(theta),  m*m*(1-np.cos(theta)) + np.cos(theta),   n*m*(1-np.cos(theta)) - l*np.sin(theta)],
-#                  [l*n*(1-np.cos(theta)) - m*np.cos(theta),  m*n*(1-np.cos(theta)) + l*np.sin(theta), n*n*(1-np.cos(theta)) + np.cos(theta)]])
-#    return R
+## user inputs
+theta_deg = 1
+rotation_axis = 'x'
+##
+
 def c(theta):
     return np.cos(theta)
 
@@ -36,13 +32,31 @@ def rotation_z(theta):
     R = np.array([[c(theta), -s(theta), 0], [s(theta), c(theta), 0], [0, 0, 1]])
     return R
 
+## Start of code
+
 A = np.array([15, 5, 130]) # offset from stage rotation centre to desired rotation centre
+print("Rotation centre offset is:")
+print("x = " + str(A[0]) + "mm")
+print("y = " + str(A[1]) + "mm")
+print("z = " + str(A[2]) + "mm")
 
-theta = np.deg2rad(1)
+print("For an rotation angle of " + str(theta_deg) + " degree about the " + rotation_axis + "-axis,")
 
-R = rotation_z(theta)
+theta = np.deg2rad(theta_deg)
+
+if rotation_axis == 'x':
+    R = rotation_x(theta)
+elif rotation_axis == 'y':
+    R = rotation_y(theta)
+elif rotation_axis == 'z':
+    R = rotation_z(theta)
 
 B = np.matmul(R, A) # location of desired rotation centre after stage rotation
 
 T_ab = B - A 
 T_ba = -T_ab # desired post-rotation translation to move rotation centre back to axis
+
+print("Requires stage translation of:")
+print("x = {0:.3f}mm".format(T_ba[0]))
+print("y = {0:.3f}mm".format(T_ba[1]))
+print("z = {0:.3f}mm".format(T_ba[2]))
