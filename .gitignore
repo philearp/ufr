@@ -1,0 +1,38 @@
+*.fig
+# images
+*.svg
+*.png
+*.pdn
+*.EPS
+*.tif
+*.jpeg
+*.tiff
+*.gif
+*.db
+
+# MATLAB
+*.asv
+*.EXP
+*.mat
+
+# documents
+*.docx
+*.~$lock
+*.pdf
+*.mmap
+*.xlsx
+*.tmp
+*.pub
+
+# text files
+*.ctf
+*.txt
+*.csv
+*.json
+
+# shortcuts
+*.lnk
+
+# Tensile testing
+*.xtas
+*.xmas
