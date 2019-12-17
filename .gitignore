@@ -18,7 +18,6 @@
 # documents
 *.docx
 *.~$lock
-*.pdf
 *.mmap
 *.xlsx
 *.tmp
