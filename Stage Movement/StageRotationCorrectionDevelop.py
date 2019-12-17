@@ -10,8 +10,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ## user inputs
-theta_deg = 1
-rotation_axis = 'x'
+theta_x_deg = 1
+theta_y_deg = 0
+theta_z_deg = 0
 ##
 
 def c(theta):
@@ -40,17 +41,22 @@ print("x = " + str(A[0]) + "mm")
 print("y = " + str(A[1]) + "mm")
 print("z = " + str(A[2]) + "mm")
 
-print("For an rotation angle of " + str(theta_deg) + " degree about the " + rotation_axis + "-axis,")
+print("For an rotation angle of ")
+print(str(theta_x_deg) + " degree about the x-axis,")
+print(str(theta_y_deg) + " degree about the y-axis, and")
+print(str(theta_z_deg) + " degree about the z-axis:")
 
-theta = np.deg2rad(theta_deg)
+# Calculate elements of rotation matrices
+R_x = rotation_x(np.deg2rad(theta_x_deg))
 
-if rotation_axis == 'x':
-    R = rotation_x(theta)
-elif rotation_axis == 'y':
-    R = rotation_y(theta)
-elif rotation_axis == 'z':
-    R = rotation_z(theta)
+R_y = rotation_y(np.deg2rad(theta_y_deg))
 
+R_z = rotation_z(np.deg2rad(theta_z_deg))
+
+R = np.matmul(R_y, R_z)
+R = np.matmul(R_x, R)
+
+# Apply rotation matrix R to point A
 B = np.matmul(R, A) # location of desired rotation centre after stage rotation
 
 T_ab = B - A 
