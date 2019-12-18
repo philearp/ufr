@@ -14,13 +14,21 @@ plt.ylabel('QPD x-value (V)', fontsize=15)
 # plt.savefig('QPD Raw Data ON.png')
 
 plt.figure()
-plt.plot(t, x, 'ko-')
-plt.xlabel('time (s)', fontsize=15)
+plt.plot(t*1000, x, 'ko-')
+plt.xlabel('time (ms)', fontsize=15)
 plt.ylabel('QPD x-value (V)', fontsize=15)
-plt.xlim(0.2, 0.2005)
-plt.show()
+plt.xlim(200, 200.5)
 # plt.savefig('QPD Raw Data ON.png')
 
+f_osc = 20e3 # oscillation frequency [Hz]
+T_osc = 1 / f_osc # oscillation time period [s]
+
+plt.figure()
+plt.plot(t / T_osc, x, 'ko-')
+plt.xlabel('cycles (n)', fontsize=15)
+plt.ylabel('QPD x-value (V)', fontsize=15)
+plt.xlim(0.2 / T_osc, 0.2005 / T_osc)
+plt.show()
 
 
 
