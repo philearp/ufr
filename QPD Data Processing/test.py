@@ -70,10 +70,26 @@ plt.xlabel('Frequency (Hz)')
 plt.ylabel('PSD (arb. units)')
 
 ## Select fundamental frequency 
+def select_fundamental_frequency(fftfreq, psd):
+    # ususally a large DC component, so only look at positive frequencies
+    # psd(fftfreq == 0) = 0
+    is_positive_freq = fftfreq > 0
+    fftfreq = fftfreq[is_positive_freq]
+    psd = psd[is_positive_freq]
+
+    f_fund = fftfreq[psd == max(psd)]
+
+    return f_fund[0] # adding [0] returns number instead of array
+
+f_fund = select_fundamental_frequency(fftfreq, x_psd)
+
+filter_half_width = 10 # Hz
+upper_filter_cutoff = f_fund + filter_half_width
+lower_filter_cutoff = f_fund - filter_half_width
 
 x_fft_fund = x_fft.copy()
-x_fft_fund[np.abs(fftfreq > 20180)] = 0
-x_fft_fund[np.abs(fftfreq < 20172)] = 0
+x_fft_fund[np.abs(fftfreq > upper_filter_cutoff)] = 0
+x_fft_fund[np.abs(fftfreq < lower_filter_cutoff)] = 0
 
 x_fund = np.real(sp.fftpack.ifft(x_fft_fund))
 
