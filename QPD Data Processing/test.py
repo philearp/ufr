@@ -7,12 +7,19 @@ x = raw[:,1]
 y = raw[:,2]
 intensity = raw[:,3]
 
+plt.plot(t,x,'k-')
+plt.xlabel('time (microseconds)', fontsize=15)
+plt.ylabel('QPD x-value (V)', fontsize=15)
+# plt.xlim(200000, 200500)
+# plt.savefig('QPD Raw Data ON.png')
+
+plt.figure()
 plt.plot(t,x,'ko-')
 plt.xlabel('time (microseconds)', fontsize=15)
 plt.ylabel('QPD x-value (V)', fontsize=15)
 plt.xlim(200000, 200500)
 plt.show()
-plt.savefig('QPD Raw Data ON.png')
+# plt.savefig('QPD Raw Data ON.png')
 
 # plt.plot(t,x,'ko-')
 # plt.xlabel('time (microseconds)', fontsize=15)
