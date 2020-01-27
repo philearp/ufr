@@ -25,10 +25,10 @@ y = y[ii]
 intensity = intensity[ii]
 
 
-
 plt.plot(t, x, 'k-')
 plt.xlabel('time (s)', fontsize=15)
 plt.ylabel('QPD x-value (V)', fontsize=15)
+plt.title('Figure 1 - Raw Data (whole dataset)')
 # plt.savefig('QPD Raw Data ON.png')
 
 plt.figure()
@@ -36,6 +36,7 @@ plt.plot(t*1000, x, 'ko-')
 plt.xlabel('time (ms)', fontsize=15)
 plt.ylabel('QPD x-value (V)', fontsize=15)
 plt.xlim(times_to_display[0] * 1000, times_to_display[1] * 1000)
+plt.title('Figure 2 - Raw Data (expanded view)')
 # plt.savefig('QPD Raw Data ON.png')
 
 T_osc = 1 / f_osc # oscillation time period [s]
@@ -45,6 +46,7 @@ plt.plot(t / T_osc, x, 'ko-')
 plt.xlabel('cycles (n)', fontsize=15)
 plt.ylabel('QPD x-value (V)', fontsize=15)
 plt.xlim(times_to_display[0] / T_osc, times_to_display[1] / T_osc)
+plt.title('Figure 3 - Raw Data (expanded view, #cycles)')
 
 ## FFT calculation
 
@@ -63,11 +65,13 @@ plt.figure()
 plt.plot(fftfreq[i], 10 * np.log10(x_psd[i])) # logarithmic
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('PSD (dB)')
+plt.title('Figure 4 - Raw Data Frequency Spectrum (log scale)')
 
 plt.figure()
 plt.plot(fftfreq[i], x_psd[i])
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('PSD (arb. units)')
+plt.title('Figure 5 - Raw Data Frequency Spectrum (abs scale)')
 
 ## Select fundamental frequency 
 def select_fundamental_frequency(fftfreq, psd):
@@ -98,6 +102,7 @@ plt.plot(t, x, 'k-')
 plt.plot(t, x_fund + np.mean(x), 'r-')
 plt.xlabel('time (s)', fontsize=15)
 plt.ylabel('QPD x-value (V)', fontsize=15)
+plt.title('Figure 6 - Fundamental Frequency +-' + str(filter_half_width) + 'Hz')
 
 plt.show()
 print('done')
