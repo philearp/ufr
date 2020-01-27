@@ -10,7 +10,7 @@ f_samp = 100e3 # sampling frequency [Hz]
 times_to_display = [0.2, 0.2005]
 ##
 
-raw = np.loadtxt('real test 2_19-11-28_15-36-41 (5).csv', dtype=float , delimiter=',', skiprows=2)
+raw = np.loadtxt('first good test_19-12-05_11-35-02 (5).csv', dtype=float , delimiter=',', skiprows=2)
 t = raw[:,0] # time [microseconds]
 t = t - t[0] # elapsed time [microseconds]
 t = t * 1e-6 # elapsed time [seconds]
@@ -24,6 +24,10 @@ x = x[ii]
 y = y[ii]
 intensity = intensity[ii]
 
+<<<<<<< HEAD
+=======
+x=y
+>>>>>>> otherdata
 
 plt.plot(t, x, 'k-')
 plt.xlabel('time (s)', fontsize=15)
