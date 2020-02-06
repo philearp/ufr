@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 ## user inputs
 theta_x_deg = 1
 theta_y_deg = 1
-theta_z_deg = 1
+theta_z_deg = 0
 ##
 
 def c(theta):
