@@ -5,12 +5,12 @@ import scipy.fftpack
 
 ##
 f_osc = 20e3 # approx. oscillation frequency [Hz]
-f_samp = 100e3 # sampling frequency [Hz]
+f_samp = 200e3 # sampling frequency [Hz]
 
 times_to_display = [0.2, 0.2005]
 ##
 
-raw = np.loadtxt('real test 2_19-11-28_15-36-41 (5).csv', dtype=float , delimiter=',', skiprows=2)
+raw = np.loadtxt('Test with new optics_20-02-05_15-59-35 (2).csv', dtype=float , delimiter=',', skiprows=4)
 t = raw[:,0] # time [microseconds]
 t = t - t[0] # elapsed time [microseconds]
 t = t * 1e-6 # elapsed time [seconds]
