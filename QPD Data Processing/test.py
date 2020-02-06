@@ -5,18 +5,23 @@ import scipy.fftpack
 
 ##
 f_osc = 20e3 # approx. oscillation frequency [Hz]
-f_samp = 100e3 # sampling frequency [Hz]
+f_samp = 200e3 # sampling frequency [Hz]
 
 times_to_display = [0.2, 0.2005]
 ##
 
-raw = np.loadtxt('first good test_19-12-05_11-35-02 (5).csv', dtype=float , delimiter=',', skiprows=2)
+raw = np.loadtxt('Test with new optics_20-02-05_15-59-35 (2).csv', dtype=float , delimiter=',', skiprows=4)
+
 t = raw[:,0] # time [microseconds]
 t = t - t[0] # elapsed time [microseconds]
 t = t * 1e-6 # elapsed time [seconds]
-x = raw[:,1]
-y = raw[:,2]
+x_raw = raw[:,1]
+y_raw = raw[:,2]
 intensity = raw[:,3]
+
+# normalise qpd data
+x = np.divide(x_raw, intensity)
+y = np.divide(y_raw, intensity)
 
 ii = t < 0.6
 t = t[ii]
@@ -28,14 +33,14 @@ x=y
 
 plt.plot(t, x, 'k-')
 plt.xlabel('time (s)', fontsize=15)
-plt.ylabel('QPD x-value (V)', fontsize=15)
+plt.ylabel('QPD x-position', fontsize=15)
 plt.title('Figure 1 - Raw Data (whole dataset)')
 # plt.savefig('QPD Raw Data ON.png')
 
 plt.figure()
 plt.plot(t*1000, x, 'ko-')
 plt.xlabel('time (ms)', fontsize=15)
-plt.ylabel('QPD x-value (V)', fontsize=15)
+plt.ylabel('QPD x-position', fontsize=15)
 plt.xlim(times_to_display[0] * 1000, times_to_display[1] * 1000)
 plt.title('Figure 2 - Raw Data (expanded view)')
 # plt.savefig('QPD Raw Data ON.png')
@@ -45,7 +50,7 @@ T_osc = 1 / f_osc # oscillation time period [s]
 plt.figure()
 plt.plot(t / T_osc, x, 'ko-')
 plt.xlabel('cycles (n)', fontsize=15)
-plt.ylabel('QPD x-value (V)', fontsize=15)
+plt.ylabel('QPD x-position', fontsize=15)
 plt.xlim(times_to_display[0] / T_osc, times_to_display[1] / T_osc)
 plt.title('Figure 3 - Raw Data (expanded view, #cycles)')
 
