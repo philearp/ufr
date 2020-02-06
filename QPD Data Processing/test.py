@@ -24,10 +24,7 @@ x = x[ii]
 y = y[ii]
 intensity = intensity[ii]
 
-<<<<<<< HEAD
-=======
 x=y
->>>>>>> otherdata
 
 plt.plot(t, x, 'k-')
 plt.xlabel('time (s)', fontsize=15)
