@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-CA_ref = np.array([15, 5, 130])
+CA_ref = np.array([80, 0, 250])
 
 # user displacements
 ux = 0
@@ -9,7 +9,7 @@ uy = 0
 uz = 0
 
 theta_x_deg = 1
-theta_y_deg = 1
+theta_y_deg = 0
 theta_z_deg = 0
 
 QP = np.array([ux, uy, uz]) # [x, y, z]
