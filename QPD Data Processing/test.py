@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
-from scipy.fftpack import fft, fftfreq, fftshift
+from scipy.fftpack import fft, ifft, fftfreq, fftshift, ifftshift
 
 ##
 f_osc = 20e3 # approx. oscillation frequency [Hz]
@@ -67,7 +67,7 @@ f_freq = fftfreq(len(p), T_samp)
 
 # apply fftshift to make 0Hz at centre of spectrum
 p = fftshift(p)
-f = fftshift(p)
+f = fftshift(f)
 f_freq = fftshift(f_freq)
 
 plt.figure()
@@ -75,7 +75,6 @@ plt.plot(f_freq, 10 * np.log10(p)) # logarithmic
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('PSD (dB)')
 plt.title('Figure 4 - Raw Data Frequency Spectrum (log scale)')
-plt.show()
 
 plt.figure()
 plt.plot(f_freq, p)
@@ -100,15 +99,33 @@ print("Resonance Frequency = {0:.3f} Hz".format(f_fund))
 
 
 # filtering frequency spectrum
-filter_half_width = 10 # Hz
+filter_half_width = 5 # Hz
 upper_filter_cutoff = f_fund + filter_half_width
 lower_filter_cutoff = f_fund - filter_half_width
 
 f_filt = f.copy()
-f_filt[np.abs(f_freq > upper_filter_cutoff)] = 0
-f_filt[np.abs(f_freq < lower_filter_cutoff)] = 0
+f_to_keep = np.zeros_like(f)
+f_to_keep[np.abs(f_freq - f_fund) < filter_half_width] = True # positive freqs
+f_to_keep[np.abs(f_freq - (-f_fund)) < filter_half_width] = True # negative freqs
+f_to_remove = np.logical_not(f_to_keep)
+f_filt[f_to_remove] = 0
 
-x_filt = 2 * np.real(sp.fftpack.ifft(f_filt))
+# plt.figure()
+# plt.plot(f_freq, np.real(f))
+# plt.plot(f_freq, np.imag(f))
+# plt.xlabel('Frequency (Hz)', fontsize=15)
+# plt.ylabel('FFT (arb. units)', fontsize=15)
+
+# Plot filtered PSD
+p_filt = np.abs(f_filt) ** 2 # power spectral density
+plt.figure()
+plt.plot(f_freq, p_filt)
+plt.xlabel('Frequency (Hz)', fontsize=15)
+plt.ylabel('Filtered PSD (arb. units)', fontsize=15)
+
+# Compute IFFT to reconstruct signal from filtered FFT
+f_filt = ifftshift(f_filt)
+x_filt = np.real(ifft(f_filt))
 
 plt.figure()
 plt.plot(t, x, 'k-')
