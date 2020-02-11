@@ -33,14 +33,14 @@ x=y
 
 plt.plot(t, x, 'k-')
 plt.xlabel('time (s)', fontsize=15)
-plt.ylabel('QPD x-position', fontsize=15)
+plt.ylabel('QPD x-position (normalised)', fontsize=15)
 plt.title('Figure 1 - Raw Data (whole dataset)')
 # plt.savefig('QPD Raw Data ON.png')
 
 plt.figure()
 plt.plot(t*1000, x, 'ko-')
 plt.xlabel('time (ms)', fontsize=15)
-plt.ylabel('QPD x-position', fontsize=15)
+plt.ylabel('QPD x-position (normalised)', fontsize=15)
 plt.xlim(times_to_display[0] * 1000, times_to_display[1] * 1000)
 plt.title('Figure 2 - Raw Data (expanded view)')
 # plt.savefig('QPD Raw Data ON.png')
@@ -50,7 +50,7 @@ T_osc = 1 / f_osc # oscillation time period [s]
 plt.figure()
 plt.plot(t / T_osc, x, 'ko-')
 plt.xlabel('cycles (n)', fontsize=15)
-plt.ylabel('QPD x-position', fontsize=15)
+plt.ylabel('QPD x-position (normalised)', fontsize=15)
 plt.xlim(times_to_display[0] / T_osc, times_to_display[1] / T_osc)
 plt.title('Figure 3 - Raw Data (expanded view, #cycles)')
 
