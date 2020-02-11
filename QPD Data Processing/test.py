@@ -94,6 +94,8 @@ def select_fundamental_frequency(fftfreq, psd):
 f_fund = select_fundamental_frequency(fftfreq, x_psd)
 print("Resonance Frequency = {0:.3f} Hz".format(f_fund))
 
+
+# filtering frequency spectrum
 filter_half_width = 10 # Hz
 upper_filter_cutoff = f_fund + filter_half_width
 lower_filter_cutoff = f_fund - filter_half_width
