@@ -59,39 +59,39 @@ plt.title('Figure 3 - Raw Data (expanded view, #cycles)')
 T_samp = 1 / f_samp # sampling time period [s]
 
 # calculate fft of QPD x signal
-x_fft = sp.fftpack.fft(x) # complex
+f = sp.fftpack.fft(x) # complex
 # calculate power spectral density (square of abs. value)
-x_psd = np.abs(x_fft) ** 2 # power spectral density
+p = np.abs(f) ** 2 # power spectral density
 # calculate frequency values of the PSD
-fftfreq = sp.fftpack.fftfreq(len(x_psd), T_samp)
+f_freq = sp.fftpack.fftfreq(len(p), T_samp)
 # only interested in positive frequencies
-i = fftfreq > 0
+i = f_freq > 0
 
 plt.figure()
-plt.plot(fftfreq[i], 10 * np.log10(x_psd[i])) # logarithmic
+plt.plot(f_freq[i], 10 * np.log10(p[i])) # logarithmic
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('PSD (dB)')
 plt.title('Figure 4 - Raw Data Frequency Spectrum (log scale)')
 
 plt.figure()
-plt.plot(fftfreq[i], x_psd[i])
+plt.plot(f_freq[i], p[i])
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('PSD (arb. units)')
 plt.title('Figure 5 - Raw Data Frequency Spectrum (abs scale)')
 
 ## Select fundamental frequency 
-def select_fundamental_frequency(fftfreq, psd):
+def select_fundamental_frequency(f_freq, psd):
     # ususally a large DC component, so only look at positive frequencies
     # psd(fftfreq == 0) = 0
-    is_positive_freq = fftfreq > 0
-    fftfreq = fftfreq[is_positive_freq]
+    is_positive_freq = f_freq > 0
+    f_freq = f_freq[is_positive_freq]
     psd = psd[is_positive_freq]
 
-    f_fund = fftfreq[psd == max(psd)]
+    f_fund = f_freq[psd == max(psd)]
 
     return f_fund[0] # adding [0] returns number instead of array
 
-f_fund = select_fundamental_frequency(fftfreq, x_psd)
+f_fund = select_fundamental_frequency(f_freq, p)
 print("Resonance Frequency = {0:.3f} Hz".format(f_fund))
 
 
@@ -100,15 +100,15 @@ filter_half_width = 10 # Hz
 upper_filter_cutoff = f_fund + filter_half_width
 lower_filter_cutoff = f_fund - filter_half_width
 
-x_fft_fund = x_fft.copy()
-x_fft_fund[np.abs(fftfreq > upper_filter_cutoff)] = 0
-x_fft_fund[np.abs(fftfreq < lower_filter_cutoff)] = 0
+f_filt = f.copy()
+f_filt[np.abs(f_freq > upper_filter_cutoff)] = 0
+f_filt[np.abs(f_freq < lower_filter_cutoff)] = 0
 
-x_fund = np.real(sp.fftpack.ifft(x_fft_fund))
+x_filt = 2 * np.real(sp.fftpack.ifft(f_filt))
 
 plt.figure()
 plt.plot(t, x, 'k-')
-plt.plot(t, x_fund + np.mean(x), 'r-')
+plt.plot(t, x_filt + np.mean(x), 'r-')
 plt.xlabel('time (s)', fontsize=15)
 plt.ylabel('QPD x-value (V)', fontsize=15)
 plt.title('Figure 6 - Fundamental Frequency +-' + str(filter_half_width) + 'Hz')
