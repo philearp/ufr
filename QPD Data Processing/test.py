@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
-import scipy.fftpack
+from scipy.fftpack import fft, fftfreq, fftshift
 
 ##
 f_osc = 20e3 # approx. oscillation frequency [Hz]
@@ -59,22 +59,23 @@ plt.title('Figure 3 - Raw Data (expanded view, #cycles)')
 T_samp = 1 / f_samp # sampling time period [s]
 
 # calculate fft of QPD x signal
-f = sp.fftpack.fft(x) # complex
+f = fft(x) # complex
 # calculate power spectral density (square of abs. value)
 p = np.abs(f) ** 2 # power spectral density
 # calculate frequency values of the PSD
-f_freq = sp.fftpack.fftfreq(len(p), T_samp)
+f_freq = fftfreq(len(p), T_samp)
 # only interested in positive frequencies
-i = f_freq > 0
+#i = f_freq > 0
 
 plt.figure()
-plt.plot(f_freq[i], 10 * np.log10(p[i])) # logarithmic
+plt.plot(fftshift(f_freq), 10 * np.log10(fftshift(p))) # logarithmic
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('PSD (dB)')
 plt.title('Figure 4 - Raw Data Frequency Spectrum (log scale)')
+plt.show()
 
 plt.figure()
-plt.plot(f_freq[i], p[i])
+plt.plot(f_freq, p)
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('PSD (arb. units)')
 plt.title('Figure 5 - Raw Data Frequency Spectrum (abs scale)')
