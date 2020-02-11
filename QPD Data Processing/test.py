@@ -64,11 +64,14 @@ f = fft(x) # complex
 p = np.abs(f) ** 2 # power spectral density
 # calculate frequency values of the PSD
 f_freq = fftfreq(len(p), T_samp)
-# only interested in positive frequencies
-#i = f_freq > 0
+
+# apply fftshift to make 0Hz at centre of spectrum
+p = fftshift(p)
+f = fftshift(p)
+f_freq = fftshift(f_freq)
 
 plt.figure()
-plt.plot(fftshift(f_freq), 10 * np.log10(fftshift(p))) # logarithmic
+plt.plot(f_freq, 10 * np.log10(p)) # logarithmic
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('PSD (dB)')
 plt.title('Figure 4 - Raw Data Frequency Spectrum (log scale)')
