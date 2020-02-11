@@ -10,7 +10,7 @@ f_samp = 200e3 # sampling frequency [Hz]
 times_to_display = [0.2, 0.2005]
 ##
 
-raw = np.loadtxt('Test with new optics_20-02-05_15-59-35 (2).csv', dtype=float , delimiter=',', skiprows=4)
+raw = np.loadtxt('data/Test with new optics_20-02-05_15-59-35 (2).csv', dtype=float , delimiter=',', skiprows=4)
 
 t = raw[:,0] # time [microseconds]
 t = t - t[0] # elapsed time [microseconds]
@@ -92,6 +92,7 @@ def select_fundamental_frequency(fftfreq, psd):
     return f_fund[0] # adding [0] returns number instead of array
 
 f_fund = select_fundamental_frequency(fftfreq, x_psd)
+print("Resonance Frequency = {0:.3f} Hz".format(f_fund))
 
 filter_half_width = 10 # Hz
 upper_filter_cutoff = f_fund + filter_half_width
