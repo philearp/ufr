@@ -27,81 +27,44 @@ def crop_data(x, y, t, t_min, t_max):
     y = y[ii]
     intensity = intensity[ii]
 
-    return 
+    return x, y, t
 
-# Code Begins Here
+def plot_raw_data(x, t, times_to_display):
+    T_osc = 1 / f_osc # oscillation time period [s]
 
-##
-f_osc = 20e3 # approx. oscillation frequency [Hz]
-f_samp = 200e3 # sampling frequency [Hz]
+    plt.plot(t, x, 'k-')
+    plt.xlabel('time (s)', fontsize=15)
+    plt.ylabel('QPD x-position (normalised)', fontsize=15)
+    plt.title('Figure 1 - Raw Data (whole dataset)')
+    # plt.savefig('QPD Raw Data ON.png')
 
-times_to_display = [0.2, 0.20025]
+    plt.figure()
+    plt.plot(t*1000, x, 'ko-')
+    plt.xlabel('time (ms)', fontsize=15)
+    plt.ylabel('QPD x-position (normalised)', fontsize=15)
+    plt.xlim(times_to_display[0] * 1000, times_to_display[1] * 1000)
+    plt.title('Figure 2 - Raw Data (expanded view)')
+    # plt.savefig('QPD Raw Data ON.png')
 
-filepath = 'data\Test with new optics_20-02-05_15-59-35 (2).csv'
-skiprows = 4
+    plt.figure()
+    plt.plot(t / T_osc, x, 'ko-')
+    plt.xlabel('cycles (n)', fontsize=15)
+    plt.ylabel('QPD x-position (normalised)', fontsize=15)
+    plt.xlim(times_to_display[0] / T_osc, times_to_display[1] / T_osc)
+    plt.title('Figure 3 - Raw Data (expanded view, #cycles)')
+    return
 
-##
+def calc_fft(x, sampling_frequency, w):
+    sampling_time_period = 1 / sampling_frequency # sampling time period [s]
 
+    # calculate fft of QPD x signal
+    f = fft(x * w) # complex
+    # calculate power spectral density (square of abs. value)
+    p = np.abs(f) ** 2 # power spectral density
+    # calculate frequency values of the PSD
+    f_freq = fftfreq(len(p), sampling_time_period)
+    return f, p, f_freq
 
-x, y, t = load_data(filepath, skiprows)
-
-x=y
-
-plt.plot(t, x, 'k-')
-plt.xlabel('time (s)', fontsize=15)
-plt.ylabel('QPD x-position (normalised)', fontsize=15)
-plt.title('Figure 1 - Raw Data (whole dataset)')
-# plt.savefig('QPD Raw Data ON.png')
-
-plt.figure()
-plt.plot(t*1000, x, 'ko-')
-plt.xlabel('time (ms)', fontsize=15)
-plt.ylabel('QPD x-position (normalised)', fontsize=15)
-plt.xlim(times_to_display[0] * 1000, times_to_display[1] * 1000)
-plt.title('Figure 2 - Raw Data (expanded view)')
-# plt.savefig('QPD Raw Data ON.png')
-
-T_osc = 1 / f_osc # oscillation time period [s]
-
-plt.figure()
-plt.plot(t / T_osc, x, 'ko-')
-plt.xlabel('cycles (n)', fontsize=15)
-plt.ylabel('QPD x-position (normalised)', fontsize=15)
-plt.xlim(times_to_display[0] / T_osc, times_to_display[1] / T_osc)
-plt.title('Figure 3 - Raw Data (expanded view, #cycles)')
-
-## FFT calculation
-
-T_samp = 1 / f_samp # sampling time period [s]
-
-
-# calculate window function
-w = hanning(len(x))
-# calculate fft of QPD x signal
-f = fft(x * w) # complex
-# calculate power spectral density (square of abs. value)
-p = np.abs(f) ** 2 # power spectral density
-# calculate frequency values of the PSD
-f_freq = fftfreq(len(p), T_samp)
-
-# apply fftshift to make 0Hz at centre of spectrum
-p = fftshift(p)
-f = fftshift(f)
-f_freq = fftshift(f_freq)
-
-plt.figure()
-plt.plot(f_freq, 10 * np.log10(p)) # logarithmic
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('PSD (dB)')
-plt.title('Figure 4 - Raw Data Frequency Spectrum (log scale)')
-
-plt.figure()
-plt.plot(f_freq, p)
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('PSD (arb. units)')
-plt.title('Figure 5 - Raw Data Frequency Spectrum (abs scale)')
-
-## Select fundamental frequency 
 def select_fundamental_frequency(f_freq, psd):
     # ususally a large DC component, so only look at positive frequencies
     # psd(fftfreq == 0) = 0
@@ -113,9 +76,58 @@ def select_fundamental_frequency(f_freq, psd):
 
     return f_fund[0] # adding [0] returns number instead of array
 
+def plot_frequency_spectra(f, p, f_freq):
+    # apply fftshift to make 0Hz at centre of spectrum
+    p = fftshift(p)
+    f = fftshift(f)
+    f_freq = fftshift(f_freq)
+
+    plt.figure()
+    plt.plot(f_freq, 10 * np.log10(p)) # logarithmic
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('PSD (dB)')
+    plt.title('Figure 4 - Raw Data Frequency Spectrum (log scale)')
+
+    plt.figure()
+    plt.plot(f_freq, p)
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('PSD (arb. units)')
+    plt.title('Figure 5 - Raw Data Frequency Spectrum (abs scale)')
+    return
+
+# ---------------------- Code Begins Here ------------------
+
+## Inputs
+f_osc = 20e3 # approx. oscillation frequency [Hz]
+sampling_frequency = 200e3 # sampling frequency [Hz]
+
+times_to_display = [0.2, 0.20025]
+
+filepath = 'data\Test with new optics_20-02-05_15-59-35 (2).csv'
+skiprows = 4
+## end of inputs
+
+# Load Data
+x, y, t = load_data(filepath, skiprows)
+
+# Plot graphs of raw data
+plot_raw_data(y, t, times_to_display)
+
+# FFT Calculation
+w = hanning(len(x)) # window function
+f, p, f_freq = calc_fft(x, sampling_frequency, w)
+
+# Select fundamental frequency 
 f_fund = select_fundamental_frequency(f_freq, p)
 print("Resonance Frequency = {0:.3f} Hz".format(f_fund))
 
+# Plot frequency spectra
+plot_frequency_spectra(f, p, f_freq)
+
+# apply fftshift to make 0Hz at centre of spectrum
+p = fftshift(p)
+f = fftshift(f)
+f_freq = fftshift(f_freq)
 
 # filtering frequency spectrum
 filter_half_width = 5 # Hz
@@ -128,12 +140,6 @@ f_to_keep[np.abs(f_freq - f_fund) < filter_half_width] = True # positive freqs
 f_to_keep[np.abs(f_freq - (-f_fund)) < filter_half_width] = True # negative freqs
 f_to_remove = np.logical_not(f_to_keep)
 f_filt[f_to_remove] = 0
-
-# plt.figure()
-# plt.plot(f_freq, np.real(f))
-# plt.plot(f_freq, np.imag(f))
-# plt.xlabel('Frequency (Hz)', fontsize=15)
-# plt.ylabel('FFT (arb. units)', fontsize=15)
 
 # Plot filtered PSD
 p_filt = np.abs(f_filt) ** 2 # power spectral density
