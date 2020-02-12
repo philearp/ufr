@@ -29,6 +29,15 @@ def crop_data(x, y, t, t_min, t_max):
 
     return x, y, t
 
+def select_variable(x, y, variable_to_calculate):
+    if variable_to_calculate == 'x':
+        v = x
+    elif variable_to_calculate == 'y':
+        v = y
+    else:
+        print("Invalid variable_to_calculate")
+    return v
+
 def plot_raw_data(x, t, times_to_display):
     T_osc = 1 / f_osc # oscillation time period [s]
 
@@ -154,8 +163,10 @@ sampling_frequency = 200e3 # sampling frequency [Hz]
 
 times_to_display = [0.2, 0.20025]
 
+variable_to_calculate = 'x'
+
 #filepath = 'data\Test with new optics_20-02-05_15-59-35 (2).csv'
-filepath = 'T:/Steve Berks/First observed failure/20sec  camera on qpd static qpd analysis 0.1 big loop 38PerCent_20-02-10_15-28-03 (1).csv'
+filepath = 'T:/Steve Berks/First observed failure/20sec  camera on qpd static qpd analysis 0.1 big loop 38PerCent_20-02-10_15-28-03.csv'
 skiprows = 4
 
 filter_half_width = 5 # Hz
@@ -164,7 +175,8 @@ filter_half_width = 5 # Hz
 # Load Data
 x, y, t = load_data(filepath, skiprows)
 
-v = y
+v = select_variable(x, y, variable_to_calculate)
+
 
 # Plot graphs of raw data
 plot_raw_data(v, t, times_to_display)
