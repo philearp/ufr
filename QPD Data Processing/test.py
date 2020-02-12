@@ -3,31 +3,46 @@ import matplotlib.pyplot as plt
 import scipy as sp
 from scipy.fftpack import fft, ifft, fftfreq, fftshift, ifftshift
 
+def load_data(filepath, skiprows):
+    raw = np.loadtxt(filepath, dtype=float , delimiter=',', skiprows=skiprows)
+
+    t = raw[:,0] # time [microseconds]
+    t = t - t[0] # elapsed time [microseconds]
+    t = t * 1e-6 # elapsed time [seconds]
+    x_raw = raw[:,1]
+    y_raw = raw[:,2]
+    intensity = raw[:,3]
+
+    # normalise qpd data
+    x = np.divide(x_raw, intensity)
+    y = np.divide(y_raw, intensity)
+
+    return x, y, t
+
+def crop_data(x, y, t, t_min, t_max):
+    ii = np.logical_and(t < t_tmax, t > t_min)
+    t = t[ii]
+    x = x[ii]
+    y = y[ii]
+    intensity = intensity[ii]
+
+    return 
+
+# Code Begins Here
+
 ##
 f_osc = 20e3 # approx. oscillation frequency [Hz]
 f_samp = 200e3 # sampling frequency [Hz]
 
 times_to_display = [0.2, 0.2005]
+
+filepath = 'data\Test with new optics_20-02-05_15-59-35 (2).csv'
+skiprows = 4
+
 ##
 
-raw = np.loadtxt('data/Test with new optics_20-02-05_15-59-35 (2).csv', dtype=float , delimiter=',', skiprows=4)
 
-t = raw[:,0] # time [microseconds]
-t = t - t[0] # elapsed time [microseconds]
-t = t * 1e-6 # elapsed time [seconds]
-x_raw = raw[:,1]
-y_raw = raw[:,2]
-intensity = raw[:,3]
-
-# normalise qpd data
-x = np.divide(x_raw, intensity)
-y = np.divide(y_raw, intensity)
-
-ii = t < 0.6
-t = t[ii]
-x = x[ii]
-y = y[ii]
-intensity = intensity[ii]
+x, y, t = load_data(filepath, skiprows)
 
 x=y
 
