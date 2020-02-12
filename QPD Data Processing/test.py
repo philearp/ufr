@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy as sp
+#import scipy as sp
 from scipy.fftpack import fft, ifft, fftfreq, fftshift, ifftshift
+from scipy.signal import hanning
 
 def load_data(filepath, skiprows):
     raw = np.loadtxt(filepath, dtype=float , delimiter=',', skiprows=skiprows)
@@ -34,7 +35,7 @@ def crop_data(x, y, t, t_min, t_max):
 f_osc = 20e3 # approx. oscillation frequency [Hz]
 f_samp = 200e3 # sampling frequency [Hz]
 
-times_to_display = [0.2, 0.2005]
+times_to_display = [0.2, 0.20025]
 
 filepath = 'data\Test with new optics_20-02-05_15-59-35 (2).csv'
 skiprows = 4
@@ -73,8 +74,11 @@ plt.title('Figure 3 - Raw Data (expanded view, #cycles)')
 
 T_samp = 1 / f_samp # sampling time period [s]
 
+
+# calculate window function
+w = hanning(len(x))
 # calculate fft of QPD x signal
-f = fft(x) # complex
+f = fft(x * w) # complex
 # calculate power spectral density (square of abs. value)
 p = np.abs(f) ** 2 # power spectral density
 # calculate frequency values of the PSD
@@ -141,6 +145,14 @@ plt.ylabel('Filtered PSD (arb. units)', fontsize=15)
 # Compute IFFT to reconstruct signal from filtered FFT
 f_filt = ifftshift(f_filt)
 x_filt = np.real(ifft(f_filt))
+
+# modify window to allow division by it (remove zeros)
+w_modified = w.copy()
+w_is_zero = (w_modified == 0)
+w_modified[w_is_zero] = 1
+
+x_filt_display = (x_filt / w_modified) + np.mean(x)
+x_filt_display[w_is_zero] = 0
 
 plt.figure()
 plt.plot(t, x, 'k-')
