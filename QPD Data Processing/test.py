@@ -95,6 +95,36 @@ def plot_frequency_spectra(f, p, f_freq):
     plt.title('Figure 5 - Raw Data Frequency Spectrum (abs scale)')
     return
 
+def filter_frequency_spectrum(f, f_freq, filter_half_width):
+    # apply fftshift to make 0Hz at centre of spectrum
+    f = fftshift(f)
+    f_freq = fftshift(f_freq)
+
+    # identify cutoff frequencies around +ve peak
+    upper_filter_cutoff = f_fund + filter_half_width
+    lower_filter_cutoff = f_fund - filter_half_width
+
+    # filter the frequency spectrum
+    f_filt = f.copy()
+    f_to_keep = np.zeros_like(f)
+    f_to_keep[np.abs(f_freq - f_fund) < filter_half_width] = True # positive freqs
+    f_to_keep[np.abs(f_freq - (-f_fund)) < filter_half_width] = True # negative freqs
+    f_to_remove = np.logical_not(f_to_keep)
+    f_filt[f_to_remove] = 0
+
+    # calculate PSD of filtered spectrum
+    p_filt = np.abs(f_filt) ** 2 # power spectral density
+
+    # Plot filtered PSD
+    plt.figure()
+    plt.plot(f_freq, p_filt)
+    plt.xlabel('Frequency (Hz)', fontsize=15)
+    plt.ylabel('Filtered PSD (arb. units)', fontsize=15)
+
+    # remove fftshift
+    f_filt = ifftshift(f_filt)
+    p_filt = ifftshift(p_filt)
+    return f_filt, p_filt
 # ---------------------- Code Begins Here ------------------
 
 ## Inputs
@@ -105,6 +135,8 @@ times_to_display = [0.2, 0.20025]
 
 filepath = 'data\Test with new optics_20-02-05_15-59-35 (2).csv'
 skiprows = 4
+
+filter_half_width = 5 # Hz
 ## end of inputs
 
 # Load Data
@@ -124,32 +156,10 @@ print("Resonance Frequency = {0:.3f} Hz".format(f_fund))
 # Plot frequency spectra
 plot_frequency_spectra(f, p, f_freq)
 
-# apply fftshift to make 0Hz at centre of spectrum
-p = fftshift(p)
-f = fftshift(f)
-f_freq = fftshift(f_freq)
-
-# filtering frequency spectrum
-filter_half_width = 5 # Hz
-upper_filter_cutoff = f_fund + filter_half_width
-lower_filter_cutoff = f_fund - filter_half_width
-
-f_filt = f.copy()
-f_to_keep = np.zeros_like(f)
-f_to_keep[np.abs(f_freq - f_fund) < filter_half_width] = True # positive freqs
-f_to_keep[np.abs(f_freq - (-f_fund)) < filter_half_width] = True # negative freqs
-f_to_remove = np.logical_not(f_to_keep)
-f_filt[f_to_remove] = 0
-
-# Plot filtered PSD
-p_filt = np.abs(f_filt) ** 2 # power spectral density
-plt.figure()
-plt.plot(f_freq, p_filt)
-plt.xlabel('Frequency (Hz)', fontsize=15)
-plt.ylabel('Filtered PSD (arb. units)', fontsize=15)
+# Filter FFT spectrum
+f_filt, p_filt = filter_frequency_spectrum(f, f_freq, filter_half_width)
 
 # Compute IFFT to reconstruct signal from filtered FFT
-f_filt = ifftshift(f_filt)
 x_filt = np.real(ifft(f_filt))
 
 # modify window to allow division by it (remove zeros)
