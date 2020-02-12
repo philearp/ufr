@@ -65,14 +65,12 @@ def calc_fft(x, sampling_frequency, w):
     f_freq = fftfreq(len(p), sampling_time_period)
     return f, p, f_freq
 
-def select_fundamental_frequency(f_freq, psd):
-    # ususally a large DC component, so only look at positive frequencies
-    # psd(fftfreq == 0) = 0
-    is_positive_freq = f_freq > 0
-    f_freq = f_freq[is_positive_freq]
-    psd = psd[is_positive_freq]
+def select_fundamental_frequency(f_freq, p):
+    psd = p.copy()
+    # ususally a large DC componen, so tremove frequencies below 10 Hz
+    psd[np.abs(f_freq < 10)] = 0
 
-    f_fund = f_freq[psd == max(psd)]
+    f_fund = f_freq[psd == np.max(psd)]
 
     return f_fund[0] # adding [0] returns number instead of array
 
@@ -156,7 +154,8 @@ sampling_frequency = 200e3 # sampling frequency [Hz]
 
 times_to_display = [0.2, 0.20025]
 
-filepath = 'data\Test with new optics_20-02-05_15-59-35 (2).csv'
+#filepath = 'data\Test with new optics_20-02-05_15-59-35 (2).csv'
+filepath = 'T:/Steve Berks/First observed failure/20sec  camera on qpd static qpd analysis 0.1 big loop 38PerCent_20-02-10_15-28-03 (1).csv'
 skiprows = 4
 
 filter_half_width = 5 # Hz
@@ -165,12 +164,14 @@ filter_half_width = 5 # Hz
 # Load Data
 x, y, t = load_data(filepath, skiprows)
 
+v = y
+
 # Plot graphs of raw data
-plot_raw_data(y, t, times_to_display)
+plot_raw_data(v, t, times_to_display)
 
 # FFT Calculation
-w = hanning(len(x)) # window function
-f, p, f_freq = calc_fft(x, sampling_frequency, w)
+w = hanning(len(v)) # window function
+f, p, f_freq = calc_fft(v, sampling_frequency, w)
 
 # Select fundamental frequency 
 f_fund = select_fundamental_frequency(f_freq, p)
@@ -188,10 +189,10 @@ print("Resonant peak intensity = {0:.2e}".format(peak_intensity))
 
 # Reconstruct signal from filtered spectrum
 remove_window = False
-x_filt = reconstruct_signal(f_filt, w, remove_window)
+v_filt = reconstruct_signal(f_filt, w, remove_window)
 
 # plot filtered signal
-plot_filtered_signal(x, x_filt, t)
+plot_filtered_signal(v, v_filt, t)
 
 plt.show()
 print('done')
