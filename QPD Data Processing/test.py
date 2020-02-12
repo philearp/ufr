@@ -125,6 +125,29 @@ def filter_frequency_spectrum(f, f_freq, filter_half_width):
     f_filt = ifftshift(f_filt)
     p_filt = ifftshift(p_filt)
     return f_filt, p_filt
+
+def reconstruct_signal(f_filt, w, remove_window):
+    # Compute IFFT to reconstruct signal from filtered FFT
+    x_filt = np.real(ifft(f_filt))
+
+    if remove_window:
+        # modify window to allow division by it (remove zeros)
+        w_modified = w.copy()
+        w_is_zero = (w_modified == 0)
+        w_modified[w_is_zero] = 1
+
+        x_filt = (x_filt / w_modified) + np.mean(x)
+        x_filt[w_is_zero] = 0
+    return x_filt
+
+def plot_filtered_signal(x, x_filt, t):
+    plt.figure()
+    plt.plot(t, x, 'k-')
+    plt.plot(t, x_filt + np.mean(x), 'r-')
+    plt.xlabel('time (s)', fontsize=15)
+    plt.ylabel('QPD x-value (V)', fontsize=15)
+    plt.title('Figure 6 - Fundamental Frequency +-' + str(filter_half_width) + 'Hz')
+    return
 # ---------------------- Code Begins Here ------------------
 
 ## Inputs
@@ -159,23 +182,16 @@ plot_frequency_spectra(f, p, f_freq)
 # Filter FFT spectrum
 f_filt, p_filt = filter_frequency_spectrum(f, f_freq, filter_half_width)
 
-# Compute IFFT to reconstruct signal from filtered FFT
-x_filt = np.real(ifft(f_filt))
+# integrate spectrum
+peak_intensity = np.trapz(p_filt, x=f_freq)
+print("Resonant peak intensity = {0:.2e}".format(peak_intensity))
 
-# modify window to allow division by it (remove zeros)
-w_modified = w.copy()
-w_is_zero = (w_modified == 0)
-w_modified[w_is_zero] = 1
+# Reconstruct signal from filtered spectrum
+remove_window = False
+x_filt = reconstruct_signal(f_filt, w, remove_window)
 
-x_filt_display = (x_filt / w_modified) + np.mean(x)
-x_filt_display[w_is_zero] = 0
-
-plt.figure()
-plt.plot(t, x, 'k-')
-plt.plot(t, x_filt + np.mean(x), 'r-')
-plt.xlabel('time (s)', fontsize=15)
-plt.ylabel('QPD x-value (V)', fontsize=15)
-plt.title('Figure 6 - Fundamental Frequency +-' + str(filter_half_width) + 'Hz')
+# plot filtered signal
+plot_filtered_signal(x, x_filt, t)
 
 plt.show()
 print('done')
