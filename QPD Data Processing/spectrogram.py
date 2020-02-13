@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import spectrogram
+from scipy.signal import spectrogram, hann
 from pathlib import Path
 
 def load_data(filepath, skiprows):
@@ -25,10 +25,11 @@ def load_data(filepath, skiprows):
 
 
 def load_spectrogram(num, folderpath, skiprows):
-    filename = "data(" + str(num) + ").csv"
+    filename = "(" + str(num) + ").csv"
     filepath = folderpath / filename
     x, y, sampling_frequency = load_data(filepath, skiprows)
-    f_freq, t_seg, Sxx = spectrogram(x, fs=sampling_frequency, nperseg=256, nfft=8192, return_onesided=True, scaling='spectrum')
+    w = hann(8192)
+    f_freq, t_seg, Sxx = spectrogram(x, fs=sampling_frequency, nperseg=8192, nfft=8192, return_onesided=True, scaling='spectrum', window=w)
 
     print("file " + str(num) 
     + ": Sampling frequency = {0:.2f} kHz, ".format(sampling_frequency / 1000) 
@@ -40,7 +41,7 @@ def load_spectrogram(num, folderpath, skiprows):
 # ---------------------- Code Begins Here ------------------   
 
 ## Inputs
-folderpath = Path("data/concat set")
+folderpath = Path("C:/Users/pearp/OneDrive - UKAEA/Project/Fatigue Rig Development/QPD Data/Amplitude ramp test/csv")
 skiprows = 4
 ##
 
@@ -49,7 +50,7 @@ skiprows = 4
 num = 1
 f_freq, t_seg, Sxx = load_spectrogram(num, folderpath, skiprows)
 # subsequent files
-for num in range(2, 10):
+for num in range(2, 16):
     f_freq_tmp, t_seg_tmp, Sxx_tmp = load_spectrogram(num, folderpath, skiprows)
 
     # make time stamps continuous
@@ -59,6 +60,11 @@ for num in range(2, 10):
     t_seg = np.hstack((t_seg, t_seg_tmp))
     Sxx = np.hstack((Sxx, Sxx_tmp))
 
+# Select frequency range near 20 kHz
+# select freqs in range < <
+# extract data from sxx
+# sum in freq direction (scale as appropriate)
+# plot as a function of time
 
 # plotting
 
@@ -69,6 +75,7 @@ for num in range(2, 10):
 
 plt.figure()
 plt.pcolormesh(t_seg, f_freq, 10 * np.log10(Sxx))
+# plt.pcolormesh(t_seg, f_freq, Sxx)
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [sec]')
 plt.show()
