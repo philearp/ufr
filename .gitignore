@@ -25,7 +25,6 @@
 
 # text files
 *.ctf
-*.txt
 *.csv
 *.json
 
