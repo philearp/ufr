@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Function Definitions
 
@@ -61,7 +60,7 @@ def main_ppoint_correction(CA_ref, QP, thetas_deg):
 
 # CODE BEGINS HERE
 
-# User inputs:
+# ----- User inputs -----
 # Define offset from stage rotation centre (needle tip) to focal point of laser
 optics_offset = np.array([80, 0, 240]) # [mm]
 
@@ -71,14 +70,15 @@ user_translation = np.array([0, 0, 0]) # [mm]
 # Define desired user rotation angles
 user_tilt = np.array([1, 0, 0]) #[degrees]
 
-# Calculation of required stage translation:
+# ----- Calculation of required stage translation -----
 print("P-Point translation of:")
 print("({0:.2f}, {1:.2f}, {2:.2f}) mm.".format(user_translation[0], user_translation[1], user_translation[2]))
 print("({0:.2f}, {1:.2f}, {2:.2f}) degrees,".format(user_tilt[0], user_tilt[1], user_tilt[2]))
 print("for an optical set-up P-Point offset of ({0:.0f}, {1:.0f}, {2:.0f}) mm".format(optics_offset[0], optics_offset[1], optics_offset[2]))
 
+# Perform calculation
 required_stage_translation = main_ppoint_correction(optics_offset, user_translation, user_tilt)
 
-print("r5equires stage translation of x = {0:.3f}mm, y = {1:.3f}mm, z = {2:.3f}mm".format(required_stage_translation[0], required_stage_translation[1], required_stage_translation[2]))
+print("requires stage translation of x = {0:.3f}mm, y = {1:.3f}mm, z = {2:.3f}mm".format(required_stage_translation[0], required_stage_translation[1], required_stage_translation[2]))
 
 
