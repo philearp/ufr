@@ -1,18 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-CA_ref = np.array([80, 0, 250])
-
-# user desired displacements
-ux = 0
-uy = 0
-uz = 0
-
-theta_x_deg = 1
-theta_y_deg = 0
-theta_z_deg = 0
-
-QP = np.array([ux, uy, uz]) # Vector from reference position on sample (Q) to desired position on sample (P)
+# Function Definitions
 
 def c(theta):
     return np.cos(theta)
@@ -43,8 +32,31 @@ def calc_rotation_matrix(theta_x_deg, theta_y_deg, theta_z_deg):
     R = np.matmul(R_x, R)
     return R
 
+# main code starts here:
+
+# Define offset from stage rotation centre (needle tip) (C) to focal point of laser (A_ref)
+CA_ref = np.array([80, 0, 250]) # [mm]
+
+# Define desired user displacements
+ux = 0 # [mm]
+uy = 0 # [mm]
+uz = 0 # [mm]
+
+# Define desired user rotation angles
+theta_x_deg = 1 # [degrees]
+theta_y_deg = 0 # [degrees]
+theta_z_deg = 0 # [degrees]
+
+# Vector from reference position on sample (Q) to desired position on sample (P)
+QP = np.array([ux, uy, uz]) # [mm]
+
+# 3x3 Rotation matrix due to angles:
+#  theta_x_deg about x-axis
+#  theta_y_deg about y-axis
+#  theta_z_deg about z-axis
 R = calc_rotation_matrix(theta_x_deg, theta_y_deg, theta_z_deg)
 
+# Calculate required stage displacement to position laser focus point at desired position on sample
 OC = QP + CA_ref - np.matmul(R, CA_ref)
 
 print("Requires stage translation of:")
