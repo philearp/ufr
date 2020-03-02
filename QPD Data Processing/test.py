@@ -49,10 +49,14 @@ def plot_raw_data(x, t, times_to_display):
 
     plt.figure()
     plt.plot(t*1000, x, 'ko-')
-    plt.xlabel('time (ms)', fontsize=15)
-    plt.ylabel('QPD x-position (normalised)', fontsize=15)
+    plt.xlabel('time (ms)', fontsize=20)
+    #plt.ylabel('QPD x-position (normalised)', fontsize=15)
+    plt.ylabel('Specimen Deflection\n(arb. units)', fontsize=20)
     plt.xlim(times_to_display[0] * 1000, times_to_display[1] * 1000)
-    plt.title('Figure 2 - Raw Data (expanded view)')
+    plt.title('First Detected Oscillation', fontsize=20)
+    plt.xticks(fontsize=15)
+    plt.yticks(fontsize=15)
+    plt.tight_layout()
     # plt.savefig('QPD Raw Data ON.png')
 
     plt.figure()
@@ -165,8 +169,8 @@ times_to_display = [0.2, 0.20025]
 
 variable_to_calculate = 'x'
 
-#filepath = 'data\Test with new optics_20-02-05_15-59-35 (2).csv'
-filepath = 'T:/Steve Berks/First observed failure/20sec  camera on qpd static qpd analysis 0.1 big loop 38PerCent_20-02-10_15-28-03.csv'
+filepath = 'C:/Users/pearp/OneDrive - UKAEA/Project/Fatigue Rig Development/QPD Data/Second good test/Test with new optics_20-02-05_15-59-35 (2).csv'
+#filepath = 'C:/Users/pearp/OneDrive - UKAEA/Project/Fatigue Rig Development/QPD Data/First observed failure/20sec  camera on qpd static qpd analysis 0.1 big loop 38PerCent_20-02-10_15-28-03.csv'
 skiprows = 4
 
 filter_half_width = 5 # Hz

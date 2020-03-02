@@ -8,7 +8,7 @@ ux = 0
 uy = 0
 uz = 0
 
-theta_x_deg = 1
+theta_x_deg = 3
 theta_y_deg = 0
 theta_z_deg = 0
 
