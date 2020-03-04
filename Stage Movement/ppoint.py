@@ -62,7 +62,7 @@ def main_ppoint_correction(CA_ref, QP, thetas_deg):
 
 # ----- User inputs -----
 # Define offset from stage rotation centre (needle tip) to focal point of laser
-optics_offset = np.array([80, 0, 240]) # [mm]
+optics_offset = np.array([51.5, 128, 263.6]) # [mm]
 
 # Define desired user displacements from reference position on sample
 user_translation = np.array([0, 0, 0]) # [mm]
