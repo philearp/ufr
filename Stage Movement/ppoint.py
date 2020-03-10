@@ -47,10 +47,10 @@ def main_ppoint_correction(CA_ref, QP, thetas_deg):
     theta_y_deg = thetas_deg[1]
     theta_z_deg = thetas_deg[2]
 
-    # 3x3 Rotation matrix due to angles:
-    #  theta_x_deg about x-axis
-    #  theta_y_deg about y-axis
-    #  theta_z_deg about z-axis
+    '''3x3 Rotation matrix due to angles:
+    theta_x_deg about x-axis
+    theta_y_deg about y-axis
+    theta_z_deg about z-axis'''
     R = calc_rotation_matrix(theta_x_deg, theta_y_deg, theta_z_deg)
 
     # Calculate required stage displacement to position laser focus point at desired position on sample
