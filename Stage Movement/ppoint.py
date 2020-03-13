@@ -68,7 +68,7 @@ optics_offset = np.array([51.5, 128, 253.6]) # [mm]
 user_translation = np.array([0, 0, 0]) # [mm]
 
 # Define desired user rotation angles
-user_tilt = np.array([0, 3, 0]) #[degrees]
+user_tilt = np.array([0, -3.5, 0]) #[degrees]
 
 # ----- Calculation of required stage translation -----
 print("P-Point translation of:")
