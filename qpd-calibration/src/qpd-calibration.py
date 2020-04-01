@@ -1,6 +1,4 @@
-# To add a new cell, type '# %%'
-# To add a new markdown cell, type '# %% [markdown]'
-
+# %%
 def load_calibration_data(filepath):
     """Loads UFR tilt calibration data from file.
 
@@ -32,6 +30,7 @@ def load_calibration_data(filepath):
     FileNotFoundError
         Raised if filename points 
     """
+    
     col_names = ['theta_x', 'theta_y', 'qpd_x', 'qpd_y', 'qpd_sum']
     df = pd.read_csv(filepath, names=col_names)
     
@@ -92,7 +91,8 @@ def fit_theta2qpd_surface(calibration_data):
     c[1, :] = surface_fitting(calibration_data['theta_x'].to_numpy(),
                             calibration_data['theta_y'].to_numpy(),
                             calibration_data['qpd_y'].to_numpy())
-    print(c)
+    if verbose_output:
+        print(c)
     return c
 
 def poly2Dreco(X, Y, c):
@@ -439,10 +439,8 @@ def verify_qpd_from_angles(thetas, c, qpd_pos, calc_opts):
 
     return calculation_validity
 
-""" # %% [markdown]
-# Demonstrate QPD --> angle calculation:
 
-# %%
+''' %%
 qpd_pos = (0., 0.09) # tuple of float
 
 calculation_options = dict(
@@ -452,7 +450,7 @@ calculation_options = dict(
             verification_threshold=0.01)
 
 thetas_numerical, calculation_validity = calc_angles_from_qpd_values(c, qpd_pos, calculation_options)
-print(calculation_validity) """
+print(calculation_validity) '''
 
 def iterate_qpd_positions(grid_qx, grid_qy, c, calc_opts):
     tx_array = np.zeros_like(grid_qx)
@@ -478,20 +476,23 @@ def fit_qpd2theta_surface(grid_qx, grid_qy, tx_array, ty_array):
     d = np.zeros([2, 7])
     d[0, :] = surface_fitting(grid_qx.flatten(), grid_qy.flatten(), tx_array.flatten())
     d[1, :] = surface_fitting(grid_qx.flatten(), grid_qy.flatten(), ty_array.flatten())
-    print(d)
+    if verbose_output:
+        print(d)
     return d
 
 def main_calibration():
-    filename = '../data/2020-03-10_QPD-Tilt-Calibration_Test1.csv'
+    
     calibration_data, calibration_data_angular_range = load_calibration_data(filename)
-    print(calibration_data)
-    print(calibration_data_angular_range)
+    if verbose_output:
+        print(calibration_data)
+        print(calibration_data_angular_range)
 
     # Fit surface to qpd(theta) data
     c = fit_theta2qpd_surface(calibration_data)
 
     # Plot fitted theta2qpd surface (optional)
-    #plot_fitted_theta2qpd_surfaces(calibration_data, c)
+    if plot_figures:
+        plot_fitted_theta2qpd_surfaces(calibration_data, c)
 
     # iterate through QPD positions
     qx_vec = np.arange(-0.3, 0.3, 0.01)
@@ -510,9 +511,13 @@ def main_calibration():
     # Fit surface to theta(qpd) data
     d = fit_qpd2theta_surface(grid_qx, grid_qy, tx_array, ty_array)
 
+    # Plot fitted qpd2theta surface (optional)
+    if plot_figures:
+        plot_fitted_qpd2theta_surfaces(grid_qx, grid_qy, tx_array, ty_array, d)
+
     return d
 
-def plot_fitted_qpd2theta_surfaces():
+def plot_fitted_qpd2theta_surfaces(grid_qx, grid_qy, tx_array, ty_array, d):
     fig = px.scatter(x=grid_qx.flatten(), y=grid_qy.flatten(), color=tx_array.flatten())
     fig.update_layout(xaxis_title='QPD x',
                     yaxis_title='QPD y')
@@ -551,8 +556,13 @@ from scipy.optimize import fsolve
 import plotly.graph_objects as go
 import plotly.express as px
 
+plot_figures = False
+verbose_output = False
+filename = '../data/2020-03-10_QPD-Tilt-Calibration_Test1.csv'
+
 d = main_calibration()
 
-qpd_pos = (0.02, 0.1)
+# %%
+qpd_pos = (0.01, 0.1)
 print(qpd2angle(qpd_pos, d))
 
