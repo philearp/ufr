@@ -234,11 +234,6 @@ def plot_fitted_theta2qpd_surfaces(calibration_data, c):
                         c[1, :],
                         plot_opts)
 
-# %% [markdown]
-# 
-# ## Numerical Calculation
-
-# %%
 def calc_angles_from_qpd_values(c, qpd_pos, calc_opts):
     """Calibration function - converts QPD position to angles 
 
@@ -403,8 +398,6 @@ def calc_angles_from_common_intersection(grid_tx, grid_ty, is_common_intersectio
 
     return thetas
 
-
-# %%
 def verify_qpd_from_angles(thetas, c, qpd_pos, calc_opts):
     """Verifies calculated angles by back-calculating QPD position
 
@@ -455,7 +448,7 @@ def verify_qpd_from_angles(thetas, c, qpd_pos, calc_opts):
 
     return calculation_validity
 
-# %% [markdown]
+""" # %% [markdown]
 # Demonstrate QPD --> angle calculation:
 
 # %%
@@ -468,13 +461,8 @@ calculation_options = dict(
             verification_threshold=0.01)
 
 thetas_numerical, calculation_validity = calc_angles_from_qpd_values(c, qpd_pos, calculation_options)
-print(calculation_validity)
+print(calculation_validity) """
 
-# %% [markdown]
-# ## Produce Calibration File
-# ### Iterate through QPD positions
-
-# %%
 def iterate_qpd_positions(grid_qx, grid_qy, c, calc_opts):
     tx_array = np.zeros_like(grid_qx)
     ty_array = np.zeros_like(grid_qx)
@@ -495,8 +483,6 @@ def iterate_qpd_positions(grid_qx, grid_qy, c, calc_opts):
     
     return tx_array, ty_array, validity.all()
 
-
-# %%
 def fit_qpd2theta_surface(grid_qx, grid_qy, tx_array, ty_array):
     d = np.zeros([2, 7])
     d[0, :] = surface_fitting(grid_qx.flatten(), grid_qy.flatten(), tx_array.flatten())
@@ -504,8 +490,6 @@ def fit_qpd2theta_surface(grid_qx, grid_qy, tx_array, ty_array):
     print(d)
     return d
 
-
-# %%
 def main_calibration():
     filename = '../data/2020-03-10_QPD-Tilt-Calibration_Test1.csv'
     calibration_data, calibration_data_angular_range = load_calibration_data(filename)
@@ -514,6 +498,9 @@ def main_calibration():
 
     # Fit surface to qpd(theta) data
     c = fit_theta2qpd_surface(calibration_data)
+
+    # Plot fitted theta2qpd surface (optional)
+    #plot_fitted_theta2qpd_surfaces(calibration_data, c)
 
     # iterate through QPD positions
     qx_vec = np.arange(-0.3, 0.3, 0.01)
@@ -537,36 +524,28 @@ def main_calibration():
 
 # %%
 
+def plot_fitted_qpd2theta_surfaces():
+    fig = px.scatter(x=grid_qx.flatten(), y=grid_qy.flatten(), color=tx_array.flatten())
+    fig.update_layout(xaxis_title='QPD x',
+                    yaxis_title='QPD y')
+    fig.show()
 
+    # Plot variation of $\theta_x$ with $q_x$ and $q_y$
+    plot_opts = dict(
+                xaxis_title='QPD x',
+                yaxis_title='QPD y',
+                zaxis_title='theta_x')
+    plot_fitted_surface(grid_qx.flatten(), grid_qy.flatten(), tx_array.flatten(), d[0, :], plot_opts)
 
-# %%
-fig = px.scatter(x=grid_qx.flatten(), y=grid_qy.flatten(), color=tx_array.flatten())
-fig.update_layout(xaxis_title='QPD x',
-                  yaxis_title='QPD y')
-fig.show()
+    # Plot variation of $\theta_y$ with $q_x$ and $q_y$
 
-# %% [markdown]
-# Plot variation of $\theta_x$ with $q_x$ and $q_y$
+    plot_opts = dict(
+                xaxis_title='QPD x',
+                yaxis_title='QPD y',
+                zaxis_title='theta_y')
+    plot_fitted_surface(grid_qx.flatten(), grid_qy.flatten(), ty_array.flatten(), d[1, :], plot_opts)
 
-# %%
-plot_opts = dict(
-            xaxis_title='QPD x',
-            yaxis_title='QPD y',
-            zaxis_title='theta_x')
-plot_fitted_surface(grid_qx.flatten(), grid_qy.flatten(), tx_array.flatten(), d[0, :], plot_opts)
-
-# %% [markdown]
-# Plot variation of $\theta_y$ with $q_x$ and $q_y$
-
-# %%
-plot_opts = dict(
-            xaxis_title='QPD x',
-            yaxis_title='QPD y',
-            zaxis_title='theta_y')
-plot_fitted_surface(grid_qx.flatten(), grid_qy.flatten(), ty_array.flatten(), d[1, :], plot_opts)
-
-
-# %%
+""" # %%
 # example of what needs implementing in LabVIEW
 def qpd2angle(qpd_pos, d):  
     
@@ -578,7 +557,9 @@ def qpd2angle(qpd_pos, d):
     theta_y = poly2Dreco(qpd_x, qpd_y, d[1, :])
 
     return (theta_x[0], theta_y[0])
+ """
 
+ ''' CODE BEGINS HERE'''
 
 d = main_calibration()
 
