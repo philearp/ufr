@@ -1,15 +1,6 @@
 # To add a new cell, type '# %%'
 # To add a new markdown cell, type '# %% [markdown]'
 
-# %%
-import pandas as pd
-import numpy as np
-from scipy import interpolate
-from scipy.optimize import fsolve
-import plotly.graph_objects as go
-import plotly.express as px
-
-# %%
 def load_calibration_data(filepath):
     """Loads UFR tilt calibration data from file.
 
@@ -93,7 +84,7 @@ def surface_fitting(x, y, z):
     
     return coeff
 
-    def fit_theta2qpd_surface(calibration_data):
+def fit_theta2qpd_surface(calibration_data):
     c = np.zeros([2, 7])
     c[0, :] = surface_fitting(calibration_data['theta_x'].to_numpy(), 
                             calibration_data['theta_y'].to_numpy(),
@@ -521,9 +512,6 @@ def main_calibration():
 
     return d
 
-
-# %%
-
 def plot_fitted_qpd2theta_surfaces():
     fig = px.scatter(x=grid_qx.flatten(), y=grid_qy.flatten(), color=tx_array.flatten())
     fig.update_layout(xaxis_title='QPD x',
@@ -545,8 +533,6 @@ def plot_fitted_qpd2theta_surfaces():
                 zaxis_title='theta_y')
     plot_fitted_surface(grid_qx.flatten(), grid_qy.flatten(), ty_array.flatten(), d[1, :], plot_opts)
 
-""" # %%
-# example of what needs implementing in LabVIEW
 def qpd2angle(qpd_pos, d):  
     
     # convert tuple --> np.ndarray for use in poly2Dreco
@@ -557,9 +543,13 @@ def qpd2angle(qpd_pos, d):
     theta_y = poly2Dreco(qpd_x, qpd_y, d[1, :])
 
     return (theta_x[0], theta_y[0])
- """
 
- ''' CODE BEGINS HERE'''
+import pandas as pd
+import numpy as np
+from scipy import interpolate
+from scipy.optimize import fsolve
+import plotly.graph_objects as go
+import plotly.express as px
 
 d = main_calibration()
 
