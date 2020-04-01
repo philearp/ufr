@@ -9,9 +9,6 @@ from scipy.optimize import fsolve
 import plotly.graph_objects as go
 import plotly.express as px
 
-# %% [markdown]
-# ## Loading Data
-
 # %%
 def load_calibration_data(filepath):
     """Loads UFR tilt calibration data from file.
@@ -57,17 +54,6 @@ def calc_xy_range(x, y):
            y.max())
     return rng
 
-# %% [markdown]
-# ## Surface Fitting
-# Fit 2D Functions of form $q_x=f(\theta_x, \theta_y)$ and $q_y=f(\theta_x, \theta_y)$
-# 
-# e.g. using 3rd order polynomials:
-# 
-# $q_x = a_1.\theta_x^3 + a_2.\theta_y^3 + a_3.\theta_x^2 + a_4.\theta_y^2 + a_5.\theta_x + a_6.\theta_y + a_7$
-# 
-# $q_y = b_1.\theta_x^3 + b_2.\theta_y^3 + b_3.\theta_x^2 + b_4.\theta_y^2 + b_5.\theta_x + b_6.\theta_y + b_7$
-
-# %%
 def surface_fitting(x, y, z):
     """Fits 3rd order polynomial surface to z(x, y).
 
@@ -107,9 +93,7 @@ def surface_fitting(x, y, z):
     
     return coeff
 
-
-# %%
-def fit_theta2qpd_surface(calibration_data):
+    def fit_theta2qpd_surface(calibration_data):
     c = np.zeros([2, 7])
     c[0, :] = surface_fitting(calibration_data['theta_x'].to_numpy(), 
                             calibration_data['theta_y'].to_numpy(),
@@ -120,10 +104,6 @@ def fit_theta2qpd_surface(calibration_data):
     print(c)
     return c
 
-# %% [markdown]
-# ### Plot the fitted surfaces
-
-# %%
 def poly2Dreco(X, Y, c):
     """Evaluates 3rd order polynomial from coefficients
 
@@ -231,36 +211,29 @@ def define_grid(xy_lims, nxy):
 
     return grid_x, grid_y
 
-# %% [markdown]
-# Plot variation of QPD x-position with $\theta_x$ and $\theta_y$
+def plot_fitted_theta2qpd_surfaces(calibration_data, c):
+    # Plot variation of QPD x-position with theta_x and theta_y
+    plot_opts = dict(
+        xaxis_title='theta_x',
+        yaxis_title='theta_y',
+        zaxis_title='QPD x')
+    plot_fitted_surface(calibration_data['theta_x'],
+                        calibration_data['theta_y'],
+                        calibration_data['qpd_x'],
+                        c[0, :],
+                        plot_opts)
 
-# %%
-plot_opts = dict(
-            xaxis_title='theta_x',
-            yaxis_title='theta_y',
-            zaxis_title='QPD x')
-plot_fitted_surface(calibration_data['theta_x'],
-                    calibration_data['theta_y'],
-                    calibration_data['qpd_x'],
-                    c[0, :],
-                    plot_opts)
+    # Plot variation of QPD y-position with theta_x and theta_y
+    plot_opts = dict(
+        xaxis_title='theta_x',
+        yaxis_title='theta_y',
+        zaxis_title='QPD y')
+    plot_fitted_surface(calibration_data['theta_x'],
+                        calibration_data['theta_y'],
+                        calibration_data['qpd_y'],
+                        c[1, :],
+                        plot_opts)
 
-# %% [markdown]
-# Plot variation of QPD x-position with $\theta_x$ and $\theta_y$
-
-# %%
-plot_opts = dict(
-            xaxis_title='theta_x',
-            yaxis_title='theta_y',
-            zaxis_title='QPD y')
-plot_fitted_surface(calibration_data['theta_x'],
-                    calibration_data['theta_y'],
-                    calibration_data['qpd_y'],
-                    c[1, :],
-                    plot_opts)
-
-# %% [markdown]
-# # Calibration Procedure
 # %% [markdown]
 # 
 # ## Numerical Calculation
