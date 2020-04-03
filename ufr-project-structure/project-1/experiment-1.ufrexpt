@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufr-experiment>
+	<created-on>
+		<date>
+			2020-04-03
+		</date>
+		<time>
+			13:12:44+00:00
+		</time>
+	</created-on>
+	<created-by>
+		<name>
+			test user
+		</name>
+		<email>
+			test.email@ukaea.uk
+		</email>
+		<institution>
+			UKAEA
+		</institution>
+	</created-by>
+	<description>
+		Test Experiment to demonstrate format. Testing samples in a batch of 10.
+	</description>
+	<num-samples>
+		1
+	</num-samples>
+</ufr-experiment>

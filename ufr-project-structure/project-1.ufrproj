@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ufr-project>
-  <created-on>
-    <date>
-      2020-04-03
-    </date>
-    <time>
-      13:12:44+00:00
-    </time>
-  </created-on>
-  <created-by>
-    <name>
-      test user
-    </name>
-    <email>
-      test.email@ukaea.uk
-    </email>
-    <institution>
-      UKAEA
-    </institution>
-  </created-by>
-  <description>
-    Test project to demonstrate format
-  </description>
-  <customer>
-    MRF internal project
-  </customer>
+	<created-on>
+		<date>
+			2020-04-03
+		</date>
+		<time>
+			13:12:44+00:00
+		</time>
+	</created-on>
+	<created-by>
+		<name>
+			test user
+		</name>
+		<email>
+			test.email@ukaea.uk
+		</email>
+		<institution>
+			UKAEA
+		</institution>
+	</created-by>
+	<description>
+		Test project to demonstrate format
+	</description>
+	<customer>
+		MRF internal project
+	</customer>
 </ufr-project>

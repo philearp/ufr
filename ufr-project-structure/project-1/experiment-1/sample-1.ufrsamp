@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufr-sample>
+	<created-on>
+		<date>
+			2020-04-03
+		</date>
+		<time>
+			13:12:44+00:00
+		</time>
+	</created-on>
+	<created-by>
+		<name>
+			test user
+		</name>
+		<email>
+			test.email@ukaea.uk
+		</email>
+		<institution>
+			UKAEA
+		</institution>
+	</created-by>
+	<sample-id>
+		Ti-Irradiated-01
+	</sample-id>
+	<dimensions>
+		<thickness-microns>
+			200
+		<thickness-microns>
+	</dimensions>
+	<material>
+		<composition>
+			Ti-6Al-4V
+		</composition>
+		<processing>
+			Heat treated 600C, quenched to RT
+		</processing>
+		<irradiation-condition>
+			<dose-dpa>
+				1.25
+			</dose-dpa>
+			<irradiation-temperature-C>
+				230
+			</irradiation-temperature-C>	
+		</irradiation-condition>
+		<actitivy>
+			<active-elements>
+				Co-60
+			</active-elements>
+			<external-contact-dose-mSv-per-h>
+				0.03
+			<external-contact-dose-mSv-per-h>
+			<is-remote-handled>
+				No
+			</is-remote-handled>
+		<actitivy>
+	</material>
+</ufr-sample>
