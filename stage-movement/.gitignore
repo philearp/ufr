@@ -1,0 +1,40 @@
+*.fig
+# images
+*.svg
+*.png
+*.pdn
+*.EPS
+*.tif
+*.jpeg
+*.tiff
+*.gif
+*.db
+
+# MATLAB
+*.asv
+*.EXP
+*.mat
+
+# documents
+*.docx
+*.~$lock
+*.mmap
+*.xlsx
+*.tmp
+*.pub
+
+# text files
+*.ctf
+*.csv
+*.json
+
+# shortcuts
+*.lnk
+
+# Tensile testing
+*.xtas
+*.xmas
+
+# Jupyter Notebook files
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
