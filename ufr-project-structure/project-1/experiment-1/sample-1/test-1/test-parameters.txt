@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufr-test>
+	<timestamp>
+		<start-date>
+			2020-04-03
+		</start-date>
+		<start-time>
+			13:12:44+00:00
+		</start-time>
+		<end-date>
+			2020-04-03
+		</end-date>
+		<end-time>
+			13:12:44+00:00
+		</end-time>
+	</timestamp>
+	<test-type>
+		step-test OR fixed-test or single-pulse
+	</test-type>
+	<xsl:if test="test-type = step-test">
+		<start-control-variable>
+			power OR amplitude OR stress
+		</start-control-variable>
+		<power-setpoint>
+			10%
+		</power-setpoint>
+		<amplitude-setpoint>
+			1 degree
+		</amplitude-setpoint>
+		<stress-setpoint>
+			100 MPa
+		</stress-setpoint>
+		<num-cycles-setpoint>
+			1e9
+		<num-cycles-setpoint>
+		<increase-method>
+			absolute OR percentage
+		</increase-method>
+		<increase-value>
+			10 MPa or 10 %
+		</increase-value>
+		<break-detection>
+			enabled
+		</break-detection>
+	</xsl:if> 
+	<xsl:if test="test-type = fixed-test">
+		<control-variable>
+			power OR amplitude OR stress
+		</control-variable>
+		<power-setpoint>
+			10%
+		</power-setpoint>
+		<amplitude-setpoint>
+			1 degree
+		</amplitude-setpoint>
+		<stress-setpoint>
+			100 MPa
+		</stress-setpoint>
+		<run-out-num-cycles>
+			1e9
+		</run-out-num-cycles>
+		<break-detection>
+			enabled
+		</break-detection>
+	<post-test>
+		<fracture-observed>
+			False
+		</fracture-observed>
+		<cycles-to-failure>
+			1e8
+		</cycles-to-failure>
+		<representative-stress>
+			150 MPa
+		</representative-stress>
+	</post-test>
+</ufr-test>
+

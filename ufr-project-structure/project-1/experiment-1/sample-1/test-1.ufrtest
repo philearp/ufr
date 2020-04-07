@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufr-test>
+	<timestamp>
+		<start-date>
+			2020-04-03
+		</start-date>
+		<start-time>
+			13:12:44+00:00
+		</start-time>
+		<end-date>
+			2020-04-03
+		</end-date>
+		<end-time>
+			13:12:44+00:00
+		</end-time>
+	</timestamp>
+	<test-type>
+		step-test OR fixed-test
+		e.g. step-test 1e7 Cycles
+		e.g. fixed-test 130 MPa Stress Setpoint
+	</test-type>
+	<post-test>
+		<fracture-observed>
+			False
+		</fracture-observed>
+		<cycles-to-failure>
+			N/A
+		</cycles-to-failure>
+		<representative-stress>
+			150 MPa
+		</representative-stress>
+	</post-test>
+</ufr-test>
