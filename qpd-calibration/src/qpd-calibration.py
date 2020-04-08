@@ -69,7 +69,7 @@ def load_calibration_data(filepath):
     """
 
     col_names = ['theta_x', 'theta_y', 'qpd_x', 'qpd_y', 'qpd_sum']
-
+    
     # Load the data
     try:
         df = pd.read_csv(filepath, names=col_names)
@@ -89,8 +89,7 @@ def load_calibration_data(filepath):
 
     angular_range = calc_xy_range(df['theta_x'], df['theta_y'])
     logger.info(f'Calibration data spans ({angular_range[0]} <= theta_x <= {angular_range[1]}) and ({angular_range[2]} <= theta_y <= {angular_range[3]}) (degrees)')
-    print(angular_range)
-    sys.exit()
+
     return df, angular_range
 
 def calc_xy_range(x, y):
@@ -538,7 +537,7 @@ def fit_qpd2theta_surface(grid_qx, grid_qy, tx_array, ty_array):
 
 def main_calibration():
     
-    logger.info(f'Start calibration using file: {filename}')
+    logger.info(f'Start calibration using file: "{filename}"')
     
     calibration_data, calibration_data_angular_range = load_calibration_data(filename)
     if verbose_output:
@@ -572,6 +571,8 @@ def main_calibration():
     # Plot fitted qpd2theta surface (optional)
     if plot_figures:
         plot_fitted_qpd2theta_surfaces(grid_qx, grid_qy, tx_array, ty_array, d)
+
+    logger.info('Calibration completed successfully.')
 
     return d
 
