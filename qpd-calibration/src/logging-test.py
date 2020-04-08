@@ -2,6 +2,16 @@
 
 
 def define_logger():
+    '''
+    The defined levels, in order of increasing severity, are the following:
+
+        DEBUG <-- least severe
+        INFO
+        WARNING
+        ERROR
+        CRITICAL <-- most severe
+    '''
+
     # Create a custom logger
     logger = logging.getLogger(__name__)
 
