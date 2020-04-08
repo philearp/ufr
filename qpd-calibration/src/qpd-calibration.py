@@ -69,14 +69,28 @@ def load_calibration_data(filepath):
     """
 
     col_names = ['theta_x', 'theta_y', 'qpd_x', 'qpd_y', 'qpd_sum']
-    df = pd.read_csv(filepath, names=col_names)
 
+    # Load the data
     try:
-        assert df.shape[1] == 4, "calibration file must have 5 columns"
+        df = pd.read_csv(filepath, names=col_names)
     except Exception as e:
-        logger.error("Assertion error occurred: ", exc_info=True)
-    
+        logger.error(f'Calibration could not be loaded', exc_info=True) # log exception
+        raise # stop further execution
+
+    # Verify data integrity
+    try:
+        assert df.shape[1] == 5, "calibration file must have 5 columns"
+        assert all(i == float for i in df.dtypes), 'Calibration data must have type <float>'
+    except Exception as e:
+        logger.error("Assertion error occurred during data loading: ", exc_info=True)
+        raise
+
+    logger.info('Calibration datafile loaded successfully')
+
     angular_range = calc_xy_range(df['theta_x'], df['theta_y'])
+    logger.info(f'Calibration data spans ({angular_range[0]} <= theta_x <= {angular_range[1]}) and ({angular_range[2]} <= theta_y <= {angular_range[3]}) (degrees)')
+    print(angular_range)
+    sys.exit()
     return df, angular_range
 
 def calc_xy_range(x, y):
@@ -600,6 +614,7 @@ from scipy.optimize import fsolve
 import plotly.graph_objects as go
 import plotly.express as px
 import logging
+import sys
 
 plot_figures = False
 verbose_output = False
