@@ -10,23 +10,26 @@ def define_logger():
         CRITICAL <-- most severe
     '''
 
+    # Configure lowest logging level
+    logging.basicConfig(level = logging.INFO)
+
     # Create a custom logger
     logger = logging.getLogger(__name__)
 
     # Create handlers
-    c_handler = logging.StreamHandler()
+    #c_handler = logging.StreamHandler()
     f_handler = logging.FileHandler('file.log')
-    c_handler.setLevel(logging.WARNING)
-    f_handler.setLevel(logging.ERROR)
+    #c_handler.setLevel(logging.INFO)
+    f_handler.setLevel(logging.INFO)
 
     # Create formatters and add it to handlers
-    c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+    #c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
     f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    c_handler.setFormatter(c_format)
+    #c_handler.setFormatter(c_format)
     f_handler.setFormatter(f_format)
 
     # Add handlers to the logger
-    logger.addHandler(c_handler)
+    #logger.addHandler(c_handler)
     logger.addHandler(f_handler)
 
     logger.info('Logging Started')
@@ -515,7 +518,7 @@ def fit_qpd2theta_surface(grid_qx, grid_qy, tx_array, ty_array):
     return d
 
 def main_calibration():
-
+    print('badge')
     logger.info(f'Start calibration using file: {filename}')
     
     calibration_data, calibration_data_angular_range = load_calibration_data(filename)
