@@ -67,9 +67,14 @@ def load_calibration_data(filepath):
     FileNotFoundError
         Raised if filename points 
     """
-    
+
     col_names = ['theta_x', 'theta_y', 'qpd_x', 'qpd_y', 'qpd_sum']
     df = pd.read_csv(filepath, names=col_names)
+
+    try:
+        assert df.shape[1] == 4, "calibration file must have 5 columns"
+    except Exception as e:
+        logger.error("Assertion error occurred: ", exc_info=True)
     
     angular_range = calc_xy_range(df['theta_x'], df['theta_y'])
     return df, angular_range
@@ -518,7 +523,7 @@ def fit_qpd2theta_surface(grid_qx, grid_qy, tx_array, ty_array):
     return d
 
 def main_calibration():
-    print('badge')
+    
     logger.info(f'Start calibration using file: {filename}')
     
     calibration_data, calibration_data_angular_range = load_calibration_data(filename)
