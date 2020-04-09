@@ -211,11 +211,14 @@ def plot_fitted_surface(x_raw, y_raw, z_raw, c, plot_opts):
     ty = plot_opts['yaxis_title']
     tz = plot_opts['zaxis_title']
     logger.info(f'Plotted figure: {tz}({tx}, {ty}) fitted surface.')
+
     # write figure
     fig_filename = f'{tz}({tx},{ty})-fitted-surface'
-    fig.write_html(f'images/{fig_filename}')
-    
-    fig.show()
+    fig.write_html(f'images/{fig_filename}.html')
+    logger.info(f'Figure saved to "images/{fig_filename}.html"')
+
+    if display_figures:
+        fig.show()
 
 def define_grid(xy_lims, nxy):
     """Creates gridded co-ordinates that span range of scattered co-ordinates.
@@ -278,7 +281,7 @@ def plot_fitted_theta2qpd_surfaces(calibration_data, c):
     plot_opts = dict(
         xaxis_title='theta_x',
         yaxis_title='theta_y',
-        zaxis_title='QPD x')
+        zaxis_title='QPD_x')
     plot_fitted_surface(calibration_data['theta_x'],
                         calibration_data['theta_y'],
                         calibration_data['qpd_x'],
@@ -290,7 +293,7 @@ def plot_fitted_theta2qpd_surfaces(calibration_data, c):
     plot_opts = dict(
         xaxis_title='theta_x',
         yaxis_title='theta_y',
-        zaxis_title='QPD y')
+        zaxis_title='QPD_y')
     plot_fitted_surface(calibration_data['theta_x'],
                         calibration_data['theta_y'],
                         calibration_data['qpd_y'],
@@ -375,6 +378,12 @@ def calc_angles_from_qpd_values(c, qpd_pos, calc_opts):
 
     # [4] Validate calculation validity
     calculation_validity = verify_qpd_from_angles(thetas, c, qpd_pos, calc_opts)
+    
+    try:
+        assert calculation_validity, 'Calculation of thetas from QPD values produced invalid result'
+    except Exception as e:
+        logger.warning(f'Invalid calculated angles for QPD position ({qpd_pos[0]}, {qpd_pos[1]})', exc_info=False)
+        #raise
 
     return (thetas, calculation_validity)
 
@@ -526,6 +535,9 @@ thetas_numerical, calculation_validity = calc_angles_from_qpd_values(c, qpd_pos,
 print(calculation_validity) '''
 
 def iterate_qpd_positions(grid_qx, grid_qy, c, calc_opts):
+    logger.info(f'Starting iteration through grid of QPD positions...')
+    logger.info('   For each QPD position, calculate (theta_x, theta_y).')
+
     tx_array = np.zeros_like(grid_qx)
     ty_array = np.zeros_like(grid_qx)
 
@@ -541,7 +553,12 @@ def iterate_qpd_positions(grid_qx, grid_qy, c, calc_opts):
 
         validity[i, j] = v
         
-    print('done')
+    logger.info(f'Completed iteration through grid of QPD positions.')
+
+    if validity.all():
+        logger.info('Calculations for all QPD positions produced valid results')
+    else:
+        logger.error('One or more QPD positions produced invalid calculated angles')
     
     return tx_array, ty_array, validity.all()
 
@@ -581,7 +598,6 @@ def main_calibration():
                 verification_threshold=0.01)
 
     tx_array, ty_array, calculation_validity = iterate_qpd_positions(grid_qx, grid_qy, c, calculation_options)
-    print('Calculation validity:', calculation_validity)
 
     # Fit surface to theta(qpd) data
     d = fit_qpd2theta_surface(grid_qx, grid_qy, tx_array, ty_array)
@@ -637,6 +653,7 @@ import sys
 
 plot_figures = True
 verbose_output = False
+display_figures = False
 filename = '../data/2020-03-10_QPD-Tilt-Calibration_Test1.csv'
 
 logger = define_logger()
