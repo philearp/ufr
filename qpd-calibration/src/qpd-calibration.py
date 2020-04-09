@@ -140,14 +140,22 @@ def surface_fitting(x, y, z):
 
 def fit_theta2qpd_surface(calibration_data):
     c = np.zeros([2, 7])
+
+    logger.info('Fitting polynomial surface to qpd_x(theta_x, theta_y) data')
     c[0, :] = surface_fitting(calibration_data['theta_x'].to_numpy(), 
                             calibration_data['theta_y'].to_numpy(),
                             calibration_data['qpd_x'].to_numpy())
+    logger.info(f'Fitting parameters: {c[0, :]}')
+
+    logger.info('Fitting polynomial surface to qpd_y(theta_x, theta_y) data')
     c[1, :] = surface_fitting(calibration_data['theta_x'].to_numpy(),
                             calibration_data['theta_y'].to_numpy(),
                             calibration_data['qpd_y'].to_numpy())
+    logger.info(f'Fitting parameters: {c[1, :]}')
+
     if verbose_output:
         print(c)
+
     return c
 
 def poly2Dreco(X, Y, c):
@@ -198,6 +206,14 @@ def plot_fitted_surface(x_raw, y_raw, z_raw, c, plot_opts):
     autosize=False,
     width=800,
     height=800)
+
+    tx = plot_opts['xaxis_title']
+    ty = plot_opts['yaxis_title']
+    tz = plot_opts['zaxis_title']
+    logger.info(f'Plotted figure: {tz}({tx}, {ty}) fitted surface.')
+    # write figure
+    fig_filename = f'{tz}({tx},{ty})-fitted-surface'
+    fig.write_html(f'images/{fig_filename}')
     
     fig.show()
 
@@ -268,6 +284,7 @@ def plot_fitted_theta2qpd_surfaces(calibration_data, c):
                         calibration_data['qpd_x'],
                         c[0, :],
                         plot_opts)
+    
 
     # Plot variation of QPD y-position with theta_x and theta_y
     plot_opts = dict(
@@ -279,6 +296,7 @@ def plot_fitted_theta2qpd_surfaces(calibration_data, c):
                         calibration_data['qpd_y'],
                         c[1, :],
                         plot_opts)
+    
 
 def calc_angles_from_qpd_values(c, qpd_pos, calc_opts):
     """Calibration function - converts QPD position to angles 
@@ -617,7 +635,7 @@ import plotly.express as px
 import logging
 import sys
 
-plot_figures = False
+plot_figures = True
 verbose_output = False
 filename = '../data/2020-03-10_QPD-Tilt-Calibration_Test1.csv'
 
