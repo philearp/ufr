@@ -1,2 +1,3 @@
 qpd-calibration/src/*.log
 qpd-calibration/src/images/*.html
+qpd-calibration/results/calibration-parameters.csv
