@@ -153,9 +153,6 @@ def fit_theta2qpd_surface(calibration_data):
                             calibration_data['qpd_y'].to_numpy())
     logger.info(f'Fitting parameters: {c[1, :]}')
 
-    if verbose_output:
-        print(c)
-
     return c
 
 def poly2Dreco(X, Y, c):
@@ -573,9 +570,6 @@ def fit_qpd2theta_surface(grid_qx, grid_qy, tx_array, ty_array):
     d[1, :] = surface_fitting(grid_qx.flatten(), grid_qy.flatten(), ty_array.flatten())
     logger.info(f'Fitting parameters: {d[1, :]}')
 
-    if verbose_output:
-        print(d)
-
     return d
 
 def main_calibration():
@@ -583,9 +577,7 @@ def main_calibration():
     logger.info(f'Start calibration using file: "{filename}"')
     
     calibration_data, calibration_data_angular_range = load_calibration_data(filename)
-    if verbose_output:
-        print(calibration_data)
-        print(calibration_data_angular_range)
+    #print(calibration_data)
 
     # Fit surface to qpd(theta) data
     c = fit_theta2qpd_surface(calibration_data)
@@ -619,10 +611,6 @@ def main_calibration():
     return d
 
 def plot_fitted_qpd2theta_surfaces(grid_qx, grid_qy, tx_array, ty_array, d):
-    fig = px.scatter(x=grid_qx.flatten(), y=grid_qy.flatten(), color=tx_array.flatten())
-    fig.update_layout(xaxis_title='QPD x',
-                    yaxis_title='QPD y')
-    fig.show()
 
     # Plot variation of $\theta_x$ with $q_x$ and $q_y$
     plot_opts = dict(
@@ -659,7 +647,6 @@ import logging
 import sys
 
 plot_figures = True
-verbose_output = False
 display_figures = False
 filename = '../data/2020-03-10_QPD-Tilt-Calibration_Test1.csv'
 
@@ -668,6 +655,6 @@ logger = define_logger()
 d = main_calibration()
 
 # %%
-qpd_pos = (0.01, 0.1)
-print(qpd2angle(qpd_pos, d))
+#qpd_pos = (0.01, 0.1)
+#print(qpd2angle(qpd_pos, d))
 
