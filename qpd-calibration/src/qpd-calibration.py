@@ -518,19 +518,6 @@ def verify_qpd_from_angles(thetas, c, qpd_pos, calc_opts):
 
     return calculation_validity
 
-
-''' %%
-qpd_pos = (0., 0.09) # tuple of float
-
-calculation_options = dict(
-            angular_range=calibration_data_angular_range,
-            calculation_grid_step_size=0.01,
-            intersection_threshold=0.01,
-            verification_threshold=0.01)
-
-thetas_numerical, calculation_validity = calc_angles_from_qpd_values(c, qpd_pos, calculation_options)
-print(calculation_validity) '''
-
 def iterate_qpd_positions(grid_qx, grid_qy, c, calc_opts):
     logger.info(f'Starting iteration through grid of QPD positions...')
     logger.info('   For each QPD position, calculate (theta_x, theta_y).')
