@@ -564,10 +564,18 @@ def iterate_qpd_positions(grid_qx, grid_qy, c, calc_opts):
 
 def fit_qpd2theta_surface(grid_qx, grid_qy, tx_array, ty_array):
     d = np.zeros([2, 7])
+
+    logger.info('Fitting polynomial surface to theta_x(qpd_x, qpd_y) data')
     d[0, :] = surface_fitting(grid_qx.flatten(), grid_qy.flatten(), tx_array.flatten())
+    logger.info(f'Fitting parameters: {d[0, :]}')
+
+    logger.info('Fitting polynomial surface to theta_y(qpd_x, qpd_y) data')
     d[1, :] = surface_fitting(grid_qx.flatten(), grid_qy.flatten(), ty_array.flatten())
+    logger.info(f'Fitting parameters: {d[1, :]}')
+
     if verbose_output:
         print(d)
+
     return d
 
 def main_calibration():
@@ -618,16 +626,15 @@ def plot_fitted_qpd2theta_surfaces(grid_qx, grid_qy, tx_array, ty_array, d):
 
     # Plot variation of $\theta_x$ with $q_x$ and $q_y$
     plot_opts = dict(
-                xaxis_title='QPD x',
-                yaxis_title='QPD y',
+                xaxis_title='QPD_x',
+                yaxis_title='QPD_y',
                 zaxis_title='theta_x')
     plot_fitted_surface(grid_qx.flatten(), grid_qy.flatten(), tx_array.flatten(), d[0, :], plot_opts)
 
     # Plot variation of $\theta_y$ with $q_x$ and $q_y$
-
     plot_opts = dict(
-                xaxis_title='QPD x',
-                yaxis_title='QPD y',
+                xaxis_title='QPD_x',
+                yaxis_title='QPD_y',
                 zaxis_title='theta_y')
     plot_fitted_surface(grid_qx.flatten(), grid_qy.flatten(), ty_array.flatten(), d[1, :], plot_opts)
 
