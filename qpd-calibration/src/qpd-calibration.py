@@ -593,6 +593,14 @@ def main_calibration():
     if plot_figures:
         plot_fitted_qpd2theta_surfaces(grid_qx, grid_qy, tx_array, ty_array, d)
 
+    # Save to file
+    logger.info(f'Writing calibration parameters to "{output_filepath}"')
+    try:
+        np.savetxt(output_filepath, d, delimiter=',')
+    except Exception as e:
+        logger.error('Error writing calibration parameters to disk')
+        raise
+
     logger.info('Calibration completed successfully.')
 
     return d
@@ -636,6 +644,7 @@ import sys
 plot_figures = True
 display_figures = False
 filename = '../data/2020-03-10_QPD-Tilt-Calibration_Test1.csv'
+output_filepath = '../results/calibration-parameters.csv'
 
 logger = define_logger()
 
