@@ -9,9 +9,9 @@ Example folder structure:
 
 \dirtree{%
 .1 project-name/.
-.2 experiment-name/.
-.3 sample-name/.
-.4 test-id/.
+.2 experiment-name/ \textit{experiment is a collection of samples}.
+.3 sample-name/ \textit{samples undergo test(s)}.
+.4 test-id/ \textit{step-test or constant-amplitude}.
 .5 pulse-id/.
 .6 images/.
 .6 qpd-data/.
@@ -26,9 +26,18 @@ Example folder structure:
 .5 calibration/.
 .4 sample-prep/.
 .4 finite-element/.
+.4 sample-info.txt.
 .3 sn-curves/.
+.3 experiment-info.txt.
+.2 project-info.txt.
 }
 
+\begin{itemize}
+  \item{\textbf{Projects} are a collections of \textbf{experiments}.
+        An example project may be `RaDIATE Titanium 2020`}
+  \item{\textbf{Experiments} comprise the individual \textbf{samples} that are to be tested.
+        An example experiment may be `Irradiation dose comparison`}
+\end{itemize}
 
 
 \end{document}
