@@ -1,46 +1,34 @@
-\documentclass[12pt]{article}
-\usepackage{lingmacros}
-\usepackage{tree-dvips}
+\documentclass{article}
+\usepackage{dirtree}
+
 \begin{document}
 
-\section*{Notes for My Paper}
+\section{Example Folder Structure}
 
-Don't forget to include examples of topicalization.
-They look like this:
+Example folder structure:
 
-{\small
-\enumsentence{Topicalization from sentential subject:\\ 
-\shortex{7}{a John$_i$ [a & kltukl & [el & 
-  {\bf l-}oltoir & er & ngii$_i$ & a Mary]]}
-{ & {\bf R-}clear & {\sc comp} & 
-  {\bf IR}.{\sc 3s}-love   & P & him & }
-{John, (it's) clear that Mary loves (him).}}
+\dirtree{%
+.1 project-name/.
+.2 experiment-name/.
+.3 sample-name/.
+.4 test-id/.
+.5 pulse-id/.
+.6 images/.
+.6 qpd-data/.
+.6 ultrasonic-data/.
+.6 pulse-summary/.
+.6 pulse-parameters.txt.
+.6 pulse-log.txt.
+.6 seek-info.txt.
+.5 test-parameters.txt.
+.5 test-log.txt.
+.5 test-summary/.
+.5 calibration/.
+.4 sample-prep/.
+.4 finite-element/.
+.3 sn-curves/.
 }
 
-\subsection*{How to handle topicalization}
 
-I'll just assume a tree structure like (\ex{1}).
-
-{\small
-\enumsentence{Structure of A$'$ Projections:\\ [2ex]
-\begin{tabular}[t]{cccc}
-    & \node{i}{CP}\\ [2ex]
-    \node{ii}{Spec} &   &\node{iii}{C$'$}\\ [2ex]
-        &\node{iv}{C} & & \node{v}{SAgrP}
-\end{tabular}
-\nodeconnect{i}{ii}
-\nodeconnect{i}{iii}
-\nodeconnect{iii}{iv}
-\nodeconnect{iii}{v}
-}
-}
-
-\subsection*{Mood}
-
-Mood changes when there is a topic, as well as when
-there is WH-movement.  \emph{Irrealis} is the mood when
-there is a non-subject topic or WH-phrase in Comp.
-\emph{Realis} is the mood when there is a subject topic
-or WH-phrase.
 
 \end{document}
