@@ -3,15 +3,42 @@
 
 \begin{document}
 
-\section{Example Folder Structure}
+\section*{Project Description}
 
-Example folder structure:
+\begin{itemize}
+  \item{
+    \textbf{Projects} are a collections of \textbf{experiments}.
+    An example project may be `RaDIATE Titanium 2020`
+  }
+  \item{
+    \textbf{Experiments} comprise the batch of individual \textbf{samples} that are to be tested.
+    These can be used to logically group samples of a similar material, or of a similar irradation condition, to aid organisation of the data.
+    An example experiment may be `Irradiation dose comparison on Ti-6Al-4V'.
+  }
+  \item{
+    \textbf{Samples} contain the information describing the physical sample, such as the dimensions, material, and sample preparation steps.
+    Each \textbf{sample} will have finite element modelling performed to relate sample deflection to stress.
+    Each \textbf{sample} can undergo one or more \textbf{tests}.
+  }
+  \item{
+    A \textbf{test} can either be a `step test', where a sequence of \textbf{pulses} are performed at ever-increasing amplitude, or a `constant-amplitude test', where a single \textbf{pulse} is given.
+    A tilt-calibration is performed at the start of each test.
+  }
+  \item{
+    A \textbf{pulse} is the application of a constant-amplitude vibration to a sample.
+    This is currently implemented in LabVIEW as a `Programmed Vibration'.
+    Each pulse begins with a seek.
+    During a pulse, qpd data, Dino-Lite images and ultrasonic info are saved. 
+  }  
+\end{itemize}
+
+\section*{Example folder structure}
 
 \dirtree{%
 .1 project-name/.
 .2 experiment-name/.
-.3 sample-name/ \textit{samples undergo test(s)}.
-.4 test-id/ \textit{step-test or constant-amplitude}.
+.3 sample-name/.
+.4 test-id/.
 .5 pulse-id/.
 .6 images/.
 .6 qpd-data/.
@@ -32,31 +59,7 @@ Example folder structure:
 .2 project-info.txt.
 }
 
-\begin{itemize}
-  \item{
-    \textbf{Projects} are a collections of \textbf{experiments}.
-    An example project may be `RaDIATE Titanium 2020`
-  }
-  \item{
-    \textbf{Experiments} comprise the batch of individual \textbf{samples} that are to be tested.
-    These can be used to logically group samples of a similar material, or of a similar irradation condition, to aid organisation of the data.
-    An example experiment may be `Irradiation dose comparison on Ti-6Al-4V'.
-  }
-  \item{
-    \textbf{Samples} contain the information describing the physical sample, such as the dimensions, material, and sample preparation steps.
-    Each \textbf{sample} will have finite element modelling performed to relate sample deflection to stress.
-    Each \textbf{sample} can undergo one or more \textbf{tests}.
-  }
-  \item{
-    A \textbf{test} can either be a `step test', where a sequence of \textbf{pulses} are performed at ever-increasing amplitude, or a `constant-amplitude test', where a single \textbf{pulse} is given.
-    A tilt-calibration is performed at the start of each test.
-  \item{
-    A \textbf{pulse} is the application of a constant-amplitude vibration to a sample.
-    This is currently implemented in LabVIEW as a `Programmed Vibration'.
-    During a pulse, qpd data, Dino-Lite images and ultrasonic info are saved. 
-  }
-  }
-\end{itemize}
+
 
 
 \end{document}
