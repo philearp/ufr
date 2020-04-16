@@ -5,6 +5,16 @@
 
 \section*{Project Description}
 
+A simple heirarchy is defined to allow organisation of the UFR data.
+
+\dirtree{%
+.1 Projects.
+.2 Experiments.
+.3 Samples.
+.4 Tests.
+.5 Pulses.
+}
+
 \begin{itemize}
   \item{
     \textbf{Projects} are a collections of \textbf{experiments}.
@@ -12,7 +22,7 @@
     These can be used by the user to distinguish between work packages, or to separate work for different customers.
   }
   \item{
-    \textbf{Experiments} comprise the batch of individual \textbf{samples} that are to be tested.
+    \textbf{Experiments (sn-curve)} comprise the batch of individual \textbf{samples} that are to be tested to build the s-n curve.
     These can be used to logically group samples of a similar material, or of a similar irradation condition, to aid organisation of the data.
     An example experiment may be `Irradiation dose comparison on Ti-6Al-4V'.
   }
@@ -29,18 +39,20 @@
     A \textbf{pulse} is the application of a constant-amplitude vibration to a sample.
     This is currently implemented in LabVIEW as a `Programmed Vibration'.
     Each pulse begins with a seek.
-    During a pulse, qpd data, Dino-Lite images and ultrasonic info are saved. 
+    During a pulse, QPD data, Dino-Lite images and ultrasonic data are saved. 
   }  
 \end{itemize}
+
+\newpage
 
 \section*{Example folder structure}
 
 \dirtree{%
-.1 project-name/.
-.2 experiment-name/.
-.3 sample-name/.
-.4 test-id/.
-.5 pulse-id/.
+.1 proj\_<project-name>/.
+.2 expt\_<experiment-name>/.
+.3 samp\_<sample-name>/.
+.4 test\_<test-id>/.
+.5 puls\_<pulse-id>/.
 .6 images/.
 .6 qpd-data/.
 .6 ultrasonic-data/.
