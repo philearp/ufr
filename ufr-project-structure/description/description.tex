@@ -1,9 +1,9 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper]{article}
 \usepackage{dirtree}
 \usepackage{fancyhdr}
 
 \pagestyle{fancy}  % sets fancyhdr
-\rhead{Version 1.1}
+\rhead{Version 1.2}
 
 \begin{document}
 
@@ -22,13 +22,13 @@ A simple heirarchy is defined to allow organisation of the UFR data.
 \begin{itemize}
   \item{
     \textbf{Projects} are a collections of \textbf{experiments}.
-    An example project may be `RaDIATE Titanium 2020'.
     These can be used by the user to distinguish between work packages, or to separate work for different customers.
+    An example project aim may be `Investigating effect of radiation dose on fatigue behaviour of Ti-6Al-4V'.
   }
   \item{
     \textbf{Experiments (S-N curve)} comprise the batch of individual \textbf{samples} that are to be tested to build an S-N curve.
     These can be used to logically group samples of a similar material, or of a similar irradation condition, to aid organisation of the data.
-    An example experiment may be `Irradiation dose comparison on Ti-6Al-4V'.
+    An example experiment may be `S-N Curve for 1.25 dpa irradiation of Ti-6Al-4V'.
   }
   \item{
     \textbf{Samples} contain the information describing the physical sample, such as the dimensions, material, and sample preparation steps.
@@ -46,7 +46,7 @@ A simple heirarchy is defined to allow organisation of the UFR data.
     This is currently implemented in LabVIEW as a `Programmed Vibration'.
     Each pulse begins with a seek.
     During a pulse, QPD data, Dino-Lite images and ultrasonic data are saved.
-    \textbf{Pulses} are created and initiated automatically by the UFR software after the user starts a \textbf{test}.
+    \textbf{Pulses} are not directly created by the user and are initiated automatically by the UFR software after the user starts a \textbf{test}.
   }  
 \end{itemize}
 
