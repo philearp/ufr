@@ -1,5 +1,9 @@
-\documentclass{article}
+\documentclass[a4paper,12pt]{article}
 \usepackage{dirtree}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}  % sets fancyhdr
+\rhead{Version 1.1}
 
 \begin{document}
 
@@ -18,11 +22,11 @@ A simple heirarchy is defined to allow organisation of the UFR data.
 \begin{itemize}
   \item{
     \textbf{Projects} are a collections of \textbf{experiments}.
-    An example project may be `RaDIATE Titanium 2020`.
+    An example project may be `RaDIATE Titanium 2020'.
     These can be used by the user to distinguish between work packages, or to separate work for different customers.
   }
   \item{
-    \textbf{Experiments (sn-curve)} comprise the batch of individual \textbf{samples} that are to be tested to build the s-n curve.
+    \textbf{Experiments (S-N curve)} comprise the batch of individual \textbf{samples} that are to be tested to build an S-N curve.
     These can be used to logically group samples of a similar material, or of a similar irradation condition, to aid organisation of the data.
     An example experiment may be `Irradiation dose comparison on Ti-6Al-4V'.
   }
@@ -32,20 +36,25 @@ A simple heirarchy is defined to allow organisation of the UFR data.
     Each \textbf{sample} can undergo one or more \textbf{tests}, although most samples will only undergo a single test if the sample is taken to failure.
   }
   \item{
+    \textbf{Tests} are the lowest level of the heirarchy that the user will interact with. The user will define the test type and the test parameters (e.g\ max.\ number of cycles, amplitude setpoint).
     A \textbf{test} can either be a `step test', where a sequence of \textbf{pulses} are performed at ever-increasing amplitude, or a `constant-amplitude test', where a single \textbf{pulse} is given.
     A tilt-calibration is performed at the start of each test.
+    Each \textbf{test} provides a single point on the S-N curve.
   }
   \item{
     A \textbf{pulse} is the application of a constant-amplitude vibration to a sample.
     This is currently implemented in LabVIEW as a `Programmed Vibration'.
     Each pulse begins with a seek.
-    During a pulse, QPD data, Dino-Lite images and ultrasonic data are saved. 
+    During a pulse, QPD data, Dino-Lite images and ultrasonic data are saved.
+    \textbf{Pulses} are created and initiated automatically by the UFR software after the user starts a \textbf{test}.
   }  
 \end{itemize}
 
 \newpage
 
 \section*{Example folder structure}
+Names of directories are appended with a forward-slash (/).
+\newline
 
 \dirtree{%
 .1 proj\_<project-name>/.
