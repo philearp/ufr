@@ -14,9 +14,7 @@ A simple heirarchy is defined to allow organisation of the UFR data.
 \dirtree{%
 .1 Projects.
 .2 Experiments.
-.3 Samples.
-.4 Tests.
-.5 Pulses.
+.3 Samples \textit{(Tests \& Pulses)}.
 }
 
 \begin{itemize}
@@ -37,13 +35,13 @@ A simple heirarchy is defined to allow organisation of the UFR data.
   }
   \item{
     \textbf{Tests} are the lowest level of the heirarchy that the user will interact with. The user will define the test type and the test parameters (e.g\ max.\ number of cycles, amplitude setpoint).
+    This is currently implemented in LabVIEW as a `Programmed Vibration'.
     A \textbf{test} can either be a `step test', where a sequence of \textbf{pulses} are performed at ever-increasing amplitude, or a `constant-amplitude test', where a single \textbf{pulse} is given.
     A tilt-calibration is performed at the start of each test.
     Each \textbf{test} provides a single point on the S-N curve.
   }
   \item{
     A \textbf{pulse} is the application of a constant-amplitude vibration to a sample.
-    This is currently implemented in LabVIEW as a `Programmed Vibration'.
     Each pulse begins with a seek.
     During a pulse, QPD data, Dino-Lite images and ultrasonic data are saved.
     \textbf{Pulses} are not directly created by the user and are initiated automatically by the UFR software after the user starts a \textbf{test}.
@@ -60,19 +58,16 @@ Names of directories are appended with a forward-slash (/).
 .1 proj\_<project-name>/.
 .2 expt\_<experiment-name>/.
 .3 samp\_<sample-name>/.
-.4 test\_<test-id>/.
-.5 puls\_<pulse-id>/.
-.6 images/.
-.6 qpd-data/.
-.6 ultrasonic-data/.
-.6 pulse-summary/.
-.6 pulse-parameters.txt.
-.6 pulse-log.txt.
-.6 seek-info.txt.
-.5 test-parameters.txt.
-.5 test-log.txt.
-.5 test-summary/.
-.5 calibration/.
+.4 <project-name>\_<experiment-name>\_<sample-name>\newline\_test-<id>\_pulse-<id>\_<datetime>\_(0001).csv/.
+.4 images/.
+.5 <project-name>\_<experiment-name>\_<sample-name>\newline\_test-<id>\_pulse-<id>\_<datetime>\_(0001).jpeg/.
+.4 test-<id>-parameters.ufrprog.
+.4 seek/.
+.5 <project-name>\_<experiment-name>\_<sample-name>\newline\_test-<id>\_pulse-<id>\_<datetime>\_seek.txt.
+.4 test-log.txt.
+.4 calibration/.
+.5 calibration-dataset.csv.
+.5 calibration-parameters.csv.
 .4 sample-prep/.
 .4 finite-element/.
 .4 sample-info.txt.
