@@ -7,3 +7,10 @@ qpd-calibration/data/2020-03-10_QPD-Tilt-Calibration_Test1.xlsx
 # Jupyter Notebook files
 *.ipynb_checkpoints
 */.ipynb_checkpoints/*
+
+ufr-cooling/OneNote Page.url
+ufr-cooling/cooling-heat-flow-equations.pdf
+ufr-cooling/deltaT-vs-air-velocity.png
+ufr-cooling/deltaT-vs-air-velocity.svg
+ufr-cooling/nusselt-vs-air-velocity.png
+ufr-cooling/nusselt-vs-air-velocity.svg
