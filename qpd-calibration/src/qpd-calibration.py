@@ -211,8 +211,8 @@ def plot_fitted_surface(x_raw, y_raw, z_raw, c, plot_opts):
 
     # write figure
     fig_filename = f'{tz}({tx},{ty})-fitted-surface'
-    fig.write_html(f'images/{fig_filename}.html')
-    logger.info(f'Figure saved to "images/{fig_filename}.html"')
+    fig.write_html(f'../results/{fig_filename}.html')
+    logger.info(f'Figure saved to "../results/{fig_filename}.html"')
 
     if display_figures:
         fig.show()
